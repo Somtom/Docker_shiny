@@ -1,1 +1,8 @@
+#login to docker account (to pull private repositories)
 docker login
+
+#pull repository
+docker pull ACCOUNT/REPOSITORYNAME  
+
+#start docker
+docker run --rm -p 3838:3838 REPOSITORYNAME

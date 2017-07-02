@@ -30,6 +30,9 @@ shinyUI(
                     menuItem("Impfung",
                              tabName = "vaccination",
                              icon = icon("medkit")),
+                    menuItem("History",
+                             tabName = "history",
+                             icon = icon("book")),
                     menuItem("Optionen",
                              tabName = "settings",
                              icon = icon("gears"))
@@ -42,18 +45,13 @@ shinyUI(
                     tabItem(tabName = "dashboard",
                             fluidRow(
                               valueBoxOutput("goToTreatment", width = 6),
-                              valueBoxOutput("goToVaccination", width = 6)
-                              ),
-                            fluidRow(
-                              column(6,
-                                     offset = 3,
-                                     valueBoxOutput("goToSettings", width = 12)
+                              valueBoxOutput("goToVaccination", width = 6),
+                              valueBoxOutput("goToHistory", width = 6),
+                              valueBoxOutput("goToSettings", width = 6)
                               )
-                            )
-                            
                     ),
                     
-                    # Medikamentengabe
+                    # Treatment
                     tabItem(tabName = "treatment", box(
                       width = 400,
                       title = "Befundsdokumentation",
@@ -79,7 +77,7 @@ shinyUI(
                         )
                       ),
                       hr(),
-                      h4("Informationen zum Befund"),
+                      h4(strong("Informationen zum Befund")),
                       br(),
                       fluidRow(
                         column(4,
@@ -111,7 +109,7 @@ shinyUI(
                       conditionalPanel(
                         condition = "input.drugtreatment == 'TRUE'",
                         hr(),
-                        h4("Informationen zur Medikamentengabe"),
+                        h4(strong("Informationen zur Medikamentengabe")),
                         br(),
                         fluidRow(
                           column(4,
@@ -146,7 +144,7 @@ shinyUI(
                       ),
                       hr(),
                       br(),
-                      h4("Maßnahmen"),
+                      h4(strong("Maßnahmen")),
                       fluidRow(
                         column(4,
                                checkboxInput(
@@ -189,14 +187,22 @@ shinyUI(
                     
                     
                     
-                    # Impfung
+                    # Vaccination
                     tabItem(tabName = "vaccination",
                             fluidRow(
                               "Impfung"
                             )
                     ),
                     
-                    # Optionen
+                    
+                    # History
+                    tabItem(tabName = "history",
+                            "HISTORY"
+                      
+                    ),
+                  
+                    
+                    # Settings
                     tabItem(tabName = "settings",
                             box(title = "Eingabefelder Befund",
                                 status = "success",

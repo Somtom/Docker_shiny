@@ -4,5 +4,5 @@ docker login
 #pull repository
 docker pull ACCOUNT/REPOSITORYNAME  
 
-#start docker
+#start docker_shiny
 docker run --rm -p 3838:3838 REPOSITORYNAME

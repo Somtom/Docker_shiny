@@ -1,5 +1,10 @@
 shinyServer(function(input, output, session) {
 
+  # History Table
+  output$historyTable <- 
+    renderDataTable({treatmentTable},
+                    options = list(scrollX = TRUE))
+  
   # Dashboard Link Boxes ----------------------------------------------------    
   # Treatment Link Box
   output$goToTreatment <- renderValueBox({
@@ -17,10 +22,10 @@ shinyServer(function(input, output, session) {
   
   # Switch: Dashboard to Treatment
   observeEvent(input$button_goToTreatment, {
-    newtab <- switch(input$tabs,
+    newtab <- switch(input$menuTabs,
                      "dashboard" = "treatment"
     )
-    updateTabItems(session, "tabs", newtab)
+    updateTabItems(session, "menuTabs", newtab)
   })
   
   # Vaccination Link Box
@@ -39,10 +44,10 @@ shinyServer(function(input, output, session) {
   
   # Switch: Dashboard to Vaccination
   observeEvent(input$button_goToVaccination, {
-    newtab <- switch(input$tabs,
+    newtab <- switch(input$menuTabs,
                      "dashboard" = "vaccination"
     )
-    updateTabItems(session, "tabs", newtab)
+    updateTabItems(session, "menuTabs", newtab)
   })
   
   # History Link Box
@@ -61,10 +66,10 @@ shinyServer(function(input, output, session) {
   
   # Switch: Dashboard to History
   observeEvent(input$button_goToHistory, {
-    newtab <- switch(input$tabs,
+    newtab <- switch(input$menuTabs,
                      "dashboard" = "history"
     )
-    updateTabItems(session, "tabs", newtab)
+    updateTabItems(session, "menuTabs", newtab)
   })
    
   # Settings Link Box
@@ -83,10 +88,10 @@ shinyServer(function(input, output, session) {
   
   # Switch: Dashboard to Settings
   observeEvent(input$button_goToSettings, {
-    newtab <- switch(input$tabs,
+    newtab <- switch(input$menuTabs,
                      "dashboard" = "settings"
     )
-    updateTabItems(session, "tabs", newtab)
+    updateTabItems(session, "menuTabs", newtab)
   })
 
 
@@ -98,8 +103,10 @@ shinyServer(function(input, output, session) {
   
 
   
+  
   # Debug -------------------------------------------------------------------
   observeEvent(input$drugtreatment,{print(input$drugtreatment)})
+  observeEvent(input$checkHistoryTable, {print(input$checkHistoryTable)})
 })
 
 

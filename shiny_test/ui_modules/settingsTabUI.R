@@ -1,0 +1,47 @@
+# This script defines the Settings Tab in the body of Calf Health Manager Dashboard
+
+settingsTabUI <- 
+  tabItem(tabName = "settings",
+          # Treatment
+          box(title = "Eingabefelder Befund",
+              status = "primary",
+              solidHeader = TRUE,
+              "Personalisiere angezeigten Eingabefelder",
+              checkboxInput(inputId = "checkUserTreatment",
+                            label = "Benutzer",
+                            value = TRUE),
+              checkboxInput(inputId = "checkAuA",
+                            label = "AuA-Nr",
+                            value = TRUE)
+          ),
+          # Vaccination
+          box(title = "Eingabefelder Impfung",
+              status = "primary",
+              solidHeader = TRUE,
+              "Personalisiere angezeigten Eingabefelder",
+              checkboxInput(inputId = "checkUserVaccination",
+                            label = "Benutzer",
+                            value = TRUE)
+          ),
+          #History
+          box(title = "History Tabelle",
+              status = "primary",
+              solidHeader = TRUE,
+              "Personalisiere Spalten der History Tabelle",
+              checkboxGroupInput(inputId = "checkHistoryTable",
+                                 label = "Spalten",
+                                 choices = subset(names(treatmentTable),
+                                                  !(names(treatmentTable) %in% 
+                                                    c("Datum",
+                                                      "Art",
+                                                      "Kalb",
+                                                      "Diagnose"))),
+                                 selected = subset(names(treatmentTable),
+                                                   !(names(treatmentTable) %in% 
+                                                       c("Datum",
+                                                         "Art",
+                                                         "Kalb",
+                                                         "Diagnose")))
+                                 )
+              )
+  )

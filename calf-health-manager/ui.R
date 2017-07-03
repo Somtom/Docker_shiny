@@ -1,6 +1,5 @@
-library(shiny)
-library(shinydashboard)
-library(shinysky)
+require(shiny)
+require(shinydashboard)
 
 
 # Get predefined input data
@@ -9,15 +8,18 @@ source("./data/inputData.R")
 
 
 # Source UI-elements
-source("./ui_modules/treatmentTabUI.R")
-source("./ui_modules/vaccinationTabUI.R")
-source("./ui_modules/settingsTabUI.R")
-source("./ui_modules/historyTabUI.R")
+source("./ui_modules/treatmentTabUI.R")$value
+source("./ui_modules/vaccinationTabUI.R")$value
+source("./ui_modules/settingsTabUI.R")$value
+source("./ui_modules/historyTabUI.R")$value
+
 
 # Defining the UI
+
+
 shinyUI(
   dashboardPage(title = "Calf Health Manager",
-                skin = "black",
+                #skin = "black",
                 
                 ###### Header           
                 dashboardHeader(title = h4("Calf Health Manager"),
@@ -64,7 +66,9 @@ shinyUI(
                     historyTabUI,
                     # Settings
                     settingsTabUI
-                  )
+                  ),
+                  # Add custom CSS
+                  source("./www/customCSS.R")$value
                 )
   )
 )

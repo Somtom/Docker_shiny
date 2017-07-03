@@ -36,7 +36,7 @@ treatmentTabUI <-
       ),
       column(4,
              numericInput(inputId = "temperature", 
-                          label = "Körpertemperatur",
+                          label = "Koerpertemperatur",
                           value = "")
       ),
       column(4,
@@ -61,45 +61,40 @@ treatmentTabUI <-
       h4(strong("Informationen zur Medikamentengabe")),
       br(),
       fluidRow(
-        column(4,
+        column(3,
                selectInput(inputId = "drug",
                            label = "Medikament",
-                           choices = data$diseases)
+                           choices = data$drugs)
         ),
-        column(4,
-               selectInput(inputId = "temperature", 
-                           label = "Körpertemperatur",
-                           choices = data$calves$nr)
+        column(3,
+               numericInput(inputId = "waitingTime", 
+                         label = "Wartezeit",
+                         value = NA)
         ),
-        column(4,
-               numericInput(inputId = "nextTreatment", 
-                            label = "Nächste Behandlung",
-                            value = NA)
-        )
-      ),
-      fluidRow(
-        column(4,
-               textInput(inputId = "waitingTime", 
-                         label = "Wartezeit")
-        ),
-        column(4,
+        column(3,
                conditionalPanel(
                  condition = "input.checkAuA == true",
-                 textInput(inputId = "AuANr",
-                           label = "AuA-Beleg Nr.")
+                 numericInput(inputId = "AuANr",
+                           label = "AuA-Beleg Nr.",
+                           value = NA)
                )
         )
       )
     ),
     hr(),
-    h4(strong("Maßnahmen")),
+    h4(strong("Massnahmen")),
     fluidRow(
       column(4,
              checkboxInput(
                inputId = "checkReminder",
                label = "Erinnerung",
-               value = TRUE
-             )
+               value = FALSE
+             ),
+             conditionalPanel(condition = "input.checkReminder == true",
+                              numericInput(inputId = "nextTreatment", 
+                                           label = "Naechste Beh.",
+                                           value = NA)
+                              )
       ),
       column(4,
              checkboxInput(
@@ -109,7 +104,7 @@ treatmentTabUI <-
              ),
              conditionalPanel(condition = "input.checkGiveElectrolyt == true",
                               selectInput(inputId = "electrolytRecipie",
-                                          label = "Elektrolytrezept auswählen",
+                                          label = "Rezept",
                                           choices = data$recepiesElectrolyt))
       ),
       column(4,
@@ -121,14 +116,20 @@ treatmentTabUI <-
              conditionalPanel(
                condition = "input.checkGiveMedicine == true",
                selectInput(inputId = "medicineRecipie",
-                           label = "Medizinrezept auswählen",
+                           label = "Rezept",
                            choices = data$recepiesMedicine))
       ) 
     ),
     fluidRow(
       column(2,
              offset = 10,
-             actionButton(inputId = "confirmTreatment", label = "Fertig"))
-    )
+             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig"))
+    ),
+    fluidRow(
+      br(),
+      column(10, offset = 1,
+             textOutput("textConfirmTreatment")
+             )
+      )
   )
   )

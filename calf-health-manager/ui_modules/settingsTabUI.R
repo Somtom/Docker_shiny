@@ -27,9 +27,9 @@ settingsTabUI <-
           box(title = "History Tabelle",
               status = "primary",
               solidHeader = TRUE,
-              "Personalisiere Spalten der History Tabelle",
+              "Waehle spalten der History Tabelle",
               checkboxGroupInput(inputId = "checkHistoryTable",
-                                 label = "Spalten",
+                                 label = "",
                                  choices = subset(names(treatmentTable),
                                                   !(names(treatmentTable) %in% 
                                                     c("Datum",

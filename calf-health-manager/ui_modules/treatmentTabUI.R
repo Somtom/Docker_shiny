@@ -2,27 +2,33 @@
 
 treatmentTabUI <- 
   tabItem(tabName = "treatment", box(
-    width = 400,
+    width = 12,
     title = "Befundsdokumentation",
     status = "danger",
     solidHeader = TRUE,
     fluidRow(
       column(4,
+             dateInput(inputId = "dateTreatment",
+                       label = "Datum",
+                       value = as.Date(Sys.time()))
+             )
+    ),
+    fluidRow(
+      column(4,
              selectInput(inputId = "calf", 
                          label = "Kalbnummer",
                          choices = data$calves$nr)
-      ),
+             ),
       column(4,
              selectInput(inputId = "eartag", 
                          label = "Ohrmarken-Nr.",
                          choices = data$calves$eartags)
-      ),
+             ),
       column(4,
              conditionalPanel(
                condition = "input.checkUserTreatment == true",
                textInput(inputId = "user",
-                         label = "Benutzer")
-             )
+                         label = "Benutzer"))
       )
     ),
     hr(),
@@ -61,17 +67,17 @@ treatmentTabUI <-
       h4(strong("Informationen zur Medikamentengabe")),
       br(),
       fluidRow(
-        column(3,
+        column(4,
                selectInput(inputId = "drug",
                            label = "Medikament",
                            choices = data$drugs)
         ),
-        column(3,
+        column(4,
                numericInput(inputId = "waitingTime", 
                          label = "Wartezeit",
                          value = NA)
         ),
-        column(3,
+        column(4,
                conditionalPanel(
                  condition = "input.checkAuA == true",
                  numericInput(inputId = "AuANr",
@@ -93,7 +99,8 @@ treatmentTabUI <-
              conditionalPanel(condition = "input.checkReminder == true",
                               numericInput(inputId = "nextTreatment", 
                                            label = "Naechste Beh.",
-                                           value = NA)
+                                           value = NA,
+                                           min = 1)
                               )
       ),
       column(4,
@@ -121,15 +128,17 @@ treatmentTabUI <-
       ) 
     ),
     fluidRow(
+      column(10, 
+             br(),
+             span(textOutput("treatmentInputChecker"), style = "color: #ff3300"),
+             span(textOutput("textTreatmentSaved"), style = "color:green")
+             ),
       column(2,
-             offset = 10,
-             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig"))
+             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig")
+             )
     ),
     fluidRow(
-      br(),
-      column(10, offset = 1,
-             textOutput("textConfirmTreatment")
-             )
+      br()
       )
   )
   )

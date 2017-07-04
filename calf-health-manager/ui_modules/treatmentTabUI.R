@@ -1,7 +1,7 @@
 # This script defines the Treatment Tab in the body of Calf Health Manager Dashboard
 
 treatmentTabUI <- 
-  tabItem(tabName = "treatment", box(
+  tabItem(tabName = "treatment", box(id = "boxTreatment",
     width = 12,
     title = "Befundsdokumentation",
     status = "danger",
@@ -10,24 +10,25 @@ treatmentTabUI <-
       column(4,
              dateInput(inputId = "dateTreatment",
                        label = "Datum",
-                       value = as.Date(Sys.time()))
-             )
+                       value = as.Date(Sys.time()),
+                       max = as.Date(Sys.time()))
+      )
     ),
     fluidRow(
       column(4,
-             selectInput(inputId = "calf", 
+             selectInput(inputId = "calfTreatment", 
                          label = "Kalbnummer",
                          choices = data$calves$nr)
-             ),
+      ),
       column(4,
-             selectInput(inputId = "eartag", 
+             selectInput(inputId = "eartagTreatment", 
                          label = "Ohrmarken-Nr.",
                          choices = data$calves$eartags)
-             ),
+      ),
       column(4,
              conditionalPanel(
                condition = "input.checkUserTreatment == true",
-               textInput(inputId = "user",
+               textInput(inputId = "userTreatment",
                          label = "Benutzer"))
       )
     ),
@@ -36,24 +37,24 @@ treatmentTabUI <-
     br(),
     fluidRow(
       column(4,
-             selectInput(inputId = "diagnosis",
+             selectInput(inputId = "diagnosisTreatment",
                          label = "Diagnose",
                          choices = data$diseases)
       ),
       column(4,
-             numericInput(inputId = "temperature", 
+             numericInput(inputId = "temperatureTreatment", 
                           label = "Koerpertemperatur",
                           value = "")
       ),
       column(4,
-             textInput(inputId = "notes", 
+             textInput(inputId = "notesTreatment", 
                        label = "Notizen")
       )
     ),
     br(),
     fluidRow(
       column(12,
-             radioButtons(inputId = "drugtreatment",
+             radioButtons(inputId = "choiceDrugtreatment",
                           label = "Wurden Medikamente verabreicht?",
                           choices = c("ja" = TRUE, "nein" = FALSE),
                           selected = FALSE,
@@ -62,27 +63,27 @@ treatmentTabUI <-
       
     ),
     conditionalPanel(
-      condition = "input.drugtreatment == 'TRUE'",
+      condition = "input.choiceDrugtreatment == 'TRUE'",
       hr(),
       h4(strong("Informationen zur Medikamentengabe")),
       br(),
       fluidRow(
         column(4,
-               selectInput(inputId = "drug",
+               selectInput(inputId = "drugTreatment",
                            label = "Medikament",
                            choices = data$drugs)
         ),
         column(4,
-               numericInput(inputId = "waitingTime", 
-                         label = "Wartezeit",
-                         value = NA)
+               numericInput(inputId = "waitingTimeTreatment", 
+                            label = "Wartezeit",
+                            value = NA)
         ),
         column(4,
                conditionalPanel(
                  condition = "input.checkAuA == true",
-                 numericInput(inputId = "AuANr",
-                           label = "AuA-Beleg Nr.",
-                           value = NA)
+                 numericInput(inputId = "AuANrTreatment",
+                              label = "AuA-Beleg Nr.",
+                              value = NA)
                )
         )
       )
@@ -92,16 +93,16 @@ treatmentTabUI <-
     fluidRow(
       column(4,
              checkboxInput(
-               inputId = "checkReminder",
+               inputId = "checkReminderTreatment",
                label = "Erinnerung",
                value = FALSE
              ),
-             conditionalPanel(condition = "input.checkReminder == true",
+             conditionalPanel(condition = "input.checkReminderTreatment == true",
                               numericInput(inputId = "nextTreatment", 
                                            label = "Naechste Beh.",
                                            value = NA,
                                            min = 1)
-                              )
+             )
       ),
       column(4,
              checkboxInput(
@@ -129,16 +130,17 @@ treatmentTabUI <-
     ),
     fluidRow(
       column(10, 
-             br(),
-             span(textOutput("treatmentInputChecker"), style = "color: #ff3300"),
-             span(textOutput("textTreatmentSaved"), style = "color:green")
-             ),
+             span(textOutput("inputCheckerTreatment"), style = "color:#ff3300"),
+             tags$head(tags$style("#inputCheckerTreatment{color: red;}")),
+             shinyalert("alertConfirmTreatment", auto.close.after = 2)
+      ),
       column(2,
-             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig")
-             )
-    ),
-    fluidRow(
-      br()
+             br(),
+             br(),
+             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig",
+                          styleclass = "danger"),
+             br()
       )
-  )
-  )
+    )
+  ))
+  

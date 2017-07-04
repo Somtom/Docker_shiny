@@ -1,5 +1,7 @@
 require(shiny)
 require(shinydashboard)
+require(shinysky)
+require(shinyjs)
 
 
 # Get predefined input data
@@ -14,11 +16,15 @@ source("./ui_modules/settingsTabUI.R")$value
 source("./ui_modules/historyTabUI.R")$value
 
 
+# Source functions
+source("./functions/addNewTreatment.R")
+source("./functions/inputCheckerTreatment.R")
+
+
 # Defining the UI
-
-
 shinyUI(
-  dashboardPage(title = "Calf Health Manager",
+  dashboardPage(
+    title = "Calf Health Manager",
                 #skin = "black",
                 
                 ###### Header           
@@ -48,6 +54,7 @@ shinyUI(
                 ),
                 ###### Body
                 dashboardBody(
+                  useShinyjs(),
                   tabItems(
                     # Dasbhoard
                     tabItem(tabName = "dashboard",

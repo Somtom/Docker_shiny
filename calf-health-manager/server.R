@@ -6,73 +6,85 @@ shinyServer(function(input, output, session) {
   rv$treatmentTable <- treatmentTable
   
   
-  # Add treatment
-  observeEvent(input$buttonConfirmTreatment, {
-
-    output$textConfirmTreatment <- renderText({
-      validate(
-        need(input$calf != "", "Please choose a calf"),
-        need(input$eartag != "", "Please choose an eartag number"),
-        need(input$diagnosis != "", "Please choose a diagnosis"),
-        if (input$checkReminder == TRUE) {
-          need(input$nextTreatment, "Please provide days until next treatment for reminder")
-        },
-        if (input$drugtreatment == TRUE) {
-          need(input$drug != "", "Please choose a drug")
-        }
-      )
+  treatmentInputChecker <- function(input, output, session) {
+    observeEvent(input$buttonConfirmTreatment, {
+      
+      output$treatmentInputChecker <- renderText({
+        validate(
+          need(input$calf != "", "Please choose a calf"),
+          need(input$eartag != "", "Please choose an eartag number"),
+          need(input$diagnosis != "", "Please choose a diagnosis"),
+          if (input$checkReminder == TRUE) {
+            need(input$nextTreatment, "Please provide days until next treatment for reminder")
+          },
+          if (input$drugtreatment == TRUE) {
+            need(input$drug != "", "Please choose a drug")
+          }
+        )
       }
-    )
-  })
+      )
+    })
+  }
+ 
+  treatmentInputChecker(input, output, session)
   
-  observeEvent(input$buttonConfirmTreatment, {
+  
+  
+  addNewTreatment <- function(input, output, session) {
     
-    
-    if (input$calf == "") return(NULL)
-    if (input$eartag == "") return(NULL)
-    if (input$diagnosis == "") return(NULL)
-    if (input$checkReminder == TRUE) {
-      if (is.na(input$nextTreatment)) return(NULL)
-    }
-    if (input$drugtreatment == TRUE) {
-      if (input$drug == "") {return(NULL)}
-    }
-    
-    # Create data.frame with empty values
-    newTreatment <-
-      data.frame(date = as.Date(Sys.time()),
-                 type = "Befund",
-                 calf = NA,
-                 eartag = NA,
-                 diagnosis  = NA,
-                 temperature = NA,
-                 drug = NA,
-                 nextTreatment = NA,
-                 waitingTime = NA,
-                 AuANr = NA,
-                 actions = NA,
-                 user = NA,
-                 notes = input$notes)
-    
-    # Assign input values to newTreatment table
-    newTreatment$calf <- input$calf
-    newTreatment$eartag <- input$eartag
-    newTreatment$user <- input$user
-    newTreatment$diagnosis <- input$diagnosis
-    newTreatment$nextTreatment <- input$nextTreatment
-    newTreatment$temperature <- input$temperature
-    if (input$drugtreatment == FALSE) {
-      newTreatment$drug <- newTreatment$nextTreatment <- newTreatment$waitingTime <- newTreatment$AuANr <- NA
-    }
-    else {
-      newTreatment$drug <- input$drug
-      newTreatment$waitingTime <- input$waitingTime
-      newTreatment$AuANr <- input$AuANr
-    }
-    
-    rv$treatmentTable <- rbind(rv$treatmentTable, newTreatment)
-    print("Debug: Treatment saved")
-  })
+    observeEvent(input$buttonConfirmTreatment, {
+      
+      
+      if (input$calf == "") return(NULL)
+      if (input$eartag == "") return(NULL)
+      if (input$diagnosis == "") return(NULL)
+      if (input$checkReminder == TRUE) {
+        if (is.na(input$nextTreatment)) return(NULL)
+      }
+      if (input$drugtreatment == TRUE) {
+        if (input$drug == "") {return(NULL)}
+      }
+      
+      # Create data.frame with empty values
+      newTreatment <-
+        data.frame(date = as.Date(Sys.time()),
+                   type = "Befund",
+                   calf = NA,
+                   eartag = NA,
+                   diagnosis  = NA,
+                   temperature = NA,
+                   drug = NA,
+                   nextTreatment = NA,
+                   waitingTime = NA,
+                   AuANr = NA,
+                   actions = NA,
+                   user = NA,
+                   notes = input$notes)
+      
+      # Assign input values to newTreatment table
+      newTreatment$calf <- input$calf
+      newTreatment$eartag <- input$eartag
+      newTreatment$user <- input$user
+      newTreatment$diagnosis <- input$diagnosis
+      newTreatment$nextTreatment <- input$nextTreatment
+      newTreatment$temperature <- input$temperature
+      if (input$drugtreatment == FALSE) {
+        newTreatment$drug <- newTreatment$nextTreatment <- newTreatment$waitingTime <- newTreatment$AuANr <- NA
+      }
+      else {
+        newTreatment$drug <- input$drug
+        newTreatment$waitingTime <- input$waitingTime
+        newTreatment$AuANr <- input$AuANr
+      }
+      
+      rv$treatmentTable <- rbind(rv$treatmentTable, newTreatment)
+      
+      output$textTreatmentSaved <- renderText("Treatment successfully saved")
+      print("Debug: New treatment saved")
+    })
+  }
+  
+  addNewTreatment(input, output, session)
   
   # History Table
   # CustomTreatmentTable <- reactive({

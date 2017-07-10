@@ -9,20 +9,58 @@ shinyServer(function(input, output, session) {
   
   addNewTreatment(input, output, session, rv)
   
+  # Calf List
+  observe({
+    #feeder
+    if (is.null(input$calfListFeeder)) {feeder = data$calves$feeder}
+    else {feeder = input$calfListFeeder}
+    
+    #calves
+    if (is.null(input$calfListCalves)) {calves = data$calves$nr}
+    else {calves = input$calfListCalves}
+    
+    #eartag
+    if (is.null(input$calfListEartag)) {eartags = data$calves$eartag}
+    else {eartag = input$calfListEartag}
+    
+    #feedingDays
+    if (input$calfListFeedingDays == "") {feedingDays = data$calves$feedingDay}
+    else {feedingDays = input$calfListFeedingDays}
+    
+
+    rv$CalfListFilter <-    list(feeder = feeder,
+                                 calves = calves,
+                                 eartags = eartags,
+                                 feedingDays = feedingDays
+                                 )})
+
+  
+  output$customCalfList <- renderDataTable(
+    subset(data$calves,
+           feeder %in% rv$CalfListFilter$feeder
+           & nr %in% rv$CalfListFilter$calves
+           & eartag %in% rv$CalfListFilter$eartags
+           & feedingDay %in% rv$CalfListFilter$feedingDays
+    ),
+    options = list(pageLength = 50)
+    )
+  
   # History Table
-  # CustomTreatmentTable <- reactive({
-  #   selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
-  #                                                   "Datum", "Kalb", "Diagnose", "Art")
-  #   rv$treatmentTable[selectedColumns]})
+  CustomTreatmentTable <- reactive({
+    selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
+                                                    "Datum", "Kalb", "Diagnose", "Art")
+    rv$treatmentTable[selectedColumns]
+    
+    print(rv$treatmentTable)})
   
   output$historyTable <- 
-    renderDataTable({rv$treatmentTable},
-                    options = list(scrollX = TRUE)
-                    )
-  
-  test <- "testname"
-  output[[test]] <- renderText("Test output ok")
-  
+    renderDataTable({
+      selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
+                                                         "date", "type", "calf", "eartag", "diagnosis")
+      rv$treatmentTable[selectedColumns]},
+      options = list(scrollX = TRUE)
+    )
+
   
   # Dashboard Link Boxes ----------------------------------------------------    
   # Treatment Link Box
@@ -125,7 +163,5 @@ shinyServer(function(input, output, session) {
   
   # Debug -------------------------------------------------------------------
 
-  
 })
-
 

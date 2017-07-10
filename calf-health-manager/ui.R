@@ -10,6 +10,7 @@ source("./data/inputData.R")
 
 
 # Source UI-elements
+source("./ui_modules/calfListTabUI.R")$value
 source("./ui_modules/treatmentTabUI.R")$value
 source("./ui_modules/vaccinationTabUI.R")$value
 source("./ui_modules/settingsTabUI.R")$value
@@ -38,6 +39,9 @@ shinyUI(
                     menuItem("Dashboard",
                              tabName = "dashboard",
                              icon = icon("dashboard")),
+                    menuItem("Tierliste",
+                             tabName = "calfList",
+                             icon = icon("list")),
                     menuItem("Befund",
                              tabName = "treatment",
                              icon = icon("thermometer-full")),
@@ -65,6 +69,8 @@ shinyUI(
                               valueBoxOutput("goToSettings", width = 6)
                               )
                     ),
+                    #CalfList
+                    calfListTabUI,
                     #Treatment
                     treatmentTabUI,
                     # Vaccination

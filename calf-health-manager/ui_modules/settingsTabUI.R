@@ -32,16 +32,18 @@ settingsTabUI <-
                                  label = "",
                                  choices = subset(names(treatmentTable),
                                                   !(names(treatmentTable) %in% 
-                                                    c("Datum",
-                                                      "Art",
-                                                      "Kalb",
-                                                      "Diagnose"))),
+                                                    c("date",
+                                                      "type",
+                                                      "calf",
+                                                      "eartag",
+                                                      "diagnosis"))),
                                  selected = subset(names(treatmentTable),
                                                    !(names(treatmentTable) %in% 
-                                                       c("Datum",
-                                                         "Art",
-                                                         "Kalb",
-                                                         "Diagnose")))
+                                                       c("date",
+                                                         "type",
+                                                         "calf",
+                                                         "eartag",
+                                                         "diagnosis")))
                                  )
               )
   )

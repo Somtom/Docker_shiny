@@ -3,12 +3,16 @@
 historyTabUI <- 
   tabItem(tabName = "history",
           fluidPage(
-            box(width = 400,
-                title = "History",
-                status = "info",
-                solidHeader = TRUE,
-                div(dataTableOutput(outputId = "historyTable"),
-                                    style = "font-size: 80%")
+            tabBox(width = 400,
+                title = tagList(shiny::icon("book"), "History"),
+                tabPanel( "Befunde/Behandlungen",
+                  div(dataTableOutput(outputId = "historyTable"),
+                      style = "font-size: 80%")
+                ),
+                tabPanel( "Impfungen",
+                          div(dataTableOutput(outputId = "vaccinationTable"),
+                              style = "font-size: 80%")
+                )
                 )
           ) 
   )

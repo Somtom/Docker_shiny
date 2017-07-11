@@ -1,5 +1,5 @@
 inputCheckerTreatment <- function(input, output, session) {
-  observeEvent(input$buttonConfirmTreatment, {
+  observeEvent(input$button_ConfirmTreatment, {
     
     output$inputCheckerTreatment <- renderText({
       validate(

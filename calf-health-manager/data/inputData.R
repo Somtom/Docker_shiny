@@ -8,6 +8,8 @@ data <- list(calves = data.frame(nr = c(1:30),
              findings = c("high temperature", "high breathing frequency", "abnormal feces"),
              diseases = c("", "disease 1", "disease 2", "disease 3"),
              drugs = c("drug 1", "drug 2", "drug 3"),
+             vaccinationPurpose = c("BHV1", "BVD", "BTV", "MKS"),
+             vaccines = c("vaccine 1", "vaccine 2", "vaccine 3"),
              recepiesElectrolyt = c("Elektrolyt 1", "Elektrolyt 2"),
              recepiesMedicine = c("Medicine 1", "Medicine 2"))
 
@@ -30,3 +32,18 @@ treatmentTable <-
     user = c("Martin", "Martin", "Johanna"),
     notes = c(NA, "nur leichter Durchfall", NA)
   )
+
+vaccinationTable <- 
+  data.frame(
+  calf = c(1,2,3),
+  eartag = c("DE0348770063", "DE0348770072", "DE0348770068"),
+  feeder = as.character(c(121,56,121)),
+  feedingDay = c(10, 8, 2),
+  date = as.Date(c("2017-06-20", "2017-06-20", "2017-06-20")),
+  type = rep("Impfun",3),
+  purpose = rep("BHV", 3),
+  batchNr = rep(123, 3),
+  veterinary = rep("Dr.Huber", 3),
+  notesVaccination = rep("", 3),
+  actions = rep("Erinnerung", 3)
+)

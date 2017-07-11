@@ -4,12 +4,15 @@ shinyServer(function(input, output, session) {
   rv <- reactiveValues()
   
   rv$treatmentTable <- treatmentTable
+  rv$vaccinationTable <- vaccinationTable
+  rv$groupSelected <- FALSE
   
   inputCheckerTreatment(input, output, session)
   
   addNewTreatment(input, output, session, rv)
+  addNewVaccination(input, output, session, rv)
   
-  # Calf List
+  # Calf List ----
   observe({
     #feeder
     if (is.null(input$calfListFeeder)) {feeder = data$calves$feeder}
@@ -23,9 +26,16 @@ shinyServer(function(input, output, session) {
     if (is.null(input$calfListEartag)) {eartags = data$calves$eartag}
     else {eartag = input$calfListEartag}
     
-    #feedingDays
-    if (input$calfListFeedingDays == "") {feedingDays = data$calves$feedingDay}
-    else {feedingDays = input$calfListFeedingDays}
+    if (is.na(input$calfListFeedingDaysMin) & is.na(input$calfListFeedingDaysMax)) {
+      feedingDays = data$calves$feedingDay
+      }
+    else if (is.na(input$calfListFeedingDaysMin)) {
+      feedingDays = 0:input$calfListFeedingDaysMax
+      }
+    else if (is.na(input$calfListFeedingDaysMax)) {
+      feedingDays = input$calfListFeedingDaysMin:max(data$calves$feedingDay, na.rm = T)
+    }
+    else {feedingDays = input$calfListFeedingDaysMin:input$calfListFeedingDaysMax}
     
 
     rv$CalfListFilter <-    list(feeder = feeder,
@@ -34,18 +44,21 @@ shinyServer(function(input, output, session) {
                                  feedingDays = feedingDays
                                  )})
 
+
   
   output$customCalfList <- renderDataTable(
-    subset(data$calves,
-           feeder %in% rv$CalfListFilter$feeder
-           & nr %in% rv$CalfListFilter$calves
-           & eartag %in% rv$CalfListFilter$eartags
-           & feedingDay %in% rv$CalfListFilter$feedingDays
+    rv$customCalfList <- subset(data$calves,
+                             feeder %in% rv$CalfListFilter$feeder
+                             & nr %in% rv$CalfListFilter$calves
+                             & eartag %in% rv$CalfListFilter$eartags
+                             & feedingDay %in% rv$CalfListFilter$feedingDays
     ),
-    options = list(pageLength = 50)
+    options = list(pageLength = 50,
+                   dom = "bottomp")
     )
   
-  # History Table
+  
+  # History Table -----
   CustomTreatmentTable <- reactive({
     selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
                                                     "Datum", "Kalb", "Diagnose", "Art")
@@ -62,18 +75,19 @@ shinyServer(function(input, output, session) {
     )
 
   
+  
   # Dashboard Link Boxes ----------------------------------------------------    
   # Treatment Link Box
   output$goToTreatment <- renderValueBox({
-    box1 <- valueBox(value = "Befund",
-                   icon = icon("thermometer-full"),
+    box1 <- valueBox(value = "Einzelbefund",
+                   icon = icon("medkit"),
                    width = NULL,
                    color = "red",
                    href = "#",
                    subtitle = "Befund oder Behandlung eintragen"
     )
-    box1$children[[1]]$attribs$class<-"action-button"
-    box1$children[[1]]$attribs$id<-"button_goToTreatment"
+    box1$children[[1]]$attribs$class <- "action-button"
+    box1$children[[1]]$attribs$id <- "button_goToTreatment"
     return(box1)
   })
   
@@ -87,22 +101,22 @@ shinyServer(function(input, output, session) {
   
   # Vaccination Link Box
   output$goToVaccination <- renderValueBox({
-    box1<-valueBox(value = "Impfung",
-                   icon = icon("medkit"),
+    box1<-valueBox(value = "Gruppe",
+                   icon = icon("ambulance"),
                    width = NULL,
                    color = "yellow",
                    href = "#",
-                   subtitle = "Impfung eintragen"
+                   subtitle = "Behandlung einer Tiergruppe eintragen"
     )
     box1$children[[1]]$attribs$class<-"action-button"
-    box1$children[[1]]$attribs$id<-"button_goToVaccination"
+    box1$children[[1]]$attribs$id<-"button_goToCalfList"
     return(box1)
   })
   
   # Switch: Dashboard to Vaccination
-  observeEvent(input$button_goToVaccination, {
+  observeEvent(input$button_goToCalfList, {
     newtab <- switch(input$menuTabs,
-                     "dashboard" = "vaccination"
+                     "dashboard" = "calfList"
     )
     updateTabItems(session, "menuTabs", newtab)
   })
@@ -161,7 +175,26 @@ shinyServer(function(input, output, session) {
 
   
   
+  
+  
+  # Other links ----
+  
+  # Calfl List links
+  # New Vaccination 
+  observeEvent(input$button_newVaccination, {
+    print("Button neue Gruppenimpfung")
+    
+    #show dynamic UI
+    shinyjs::show(id = "dynamicVaccinationUI")
+    shinyjs::hide(id = "selectCalvesInfoVaccination")
+    
+    newtab <- switch(input$menuTabs,
+                     "calfList" = "vaccination"
+    )
+    updateTabItems(session, "menuTabs", newtab)
+  })
+  
   # Debug -------------------------------------------------------------------
-
+  
 })
 

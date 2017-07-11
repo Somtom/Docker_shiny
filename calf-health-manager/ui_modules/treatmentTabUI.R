@@ -151,7 +151,7 @@ treatmentTabUI <-
       column(2,
              br(),
              br(),
-             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig",
+             actionButton(inputId = "button_ConfirmTreatment", label = "Fertig",
                           styleclass = "danger"),
              br()
       )

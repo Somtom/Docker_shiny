@@ -19,6 +19,7 @@ source("./ui_modules/historyTabUI.R")$value
 
 # Source functions
 source("./functions/addNewTreatment.R")
+source("./functions/addNewVaccination.R")
 source("./functions/inputCheckerTreatment.R")
 
 
@@ -39,15 +40,15 @@ shinyUI(
                     menuItem("Dashboard",
                              tabName = "dashboard",
                              icon = icon("dashboard")),
-                    menuItem("Tierliste",
-                             tabName = "calfList",
-                             icon = icon("list")),
-                    menuItem("Befund",
+                    menuItem("Einzelbefund",
                              tabName = "treatment",
-                             icon = icon("thermometer-full")),
-                    menuItem("Impfung",
-                             tabName = "vaccination",
                              icon = icon("medkit")),
+                    menuItem("Gruppenbehandlung",
+                             tabName = "calfList",
+                             icon = icon("ambulance")),
+                    shinyjs::hidden(menuItem("Impfung",
+                             tabName = "vaccination",
+                             icon = icon("ambulance"))),
                     menuItem("History",
                              tabName = "history",
                              icon = icon("book")),
@@ -67,7 +68,8 @@ shinyUI(
                               valueBoxOutput("goToVaccination", width = 6),
                               valueBoxOutput("goToHistory", width = 6),
                               valueBoxOutput("goToSettings", width = 6)
-                              )
+                              ),
+                            fluidRow(column(4, offset = 4,shinyalert("alertConfirmVaccination", auto.close.after = 2)))
                     ),
                     #CalfList
                     calfListTabUI,

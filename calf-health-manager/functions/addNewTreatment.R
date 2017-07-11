@@ -1,6 +1,6 @@
 addNewTreatment <- function(input, output, session, rv) {
   
-  observeEvent(input$buttonConfirmTreatment, {
+  observeEvent(input$button_ConfirmTreatment, {
     # Check if crutial provided
     if (input$calfTreatment == "") return(NULL)
     if (input$eartagTreatment == "") return(NULL)

@@ -47,7 +47,3 @@ vaccinationTable <-
   notesVaccination = rep("", 3),
   actions = rep("Erinnerung", 3)
 )
-
-
-membership <- data.frame(
-  user = c("ft", "sam", "john", "kelly", "ben", "joe"))

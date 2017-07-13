@@ -1,22 +1,11 @@
 #### Log in module ###
 
 PASSWORD <- data.frame(
-  Brukernavn = c("test"), 
-  Passord = c("test")
+  user = c("test"), 
+  password = c("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08")
 )
 
-# Header UI
-output$headerUI <- renderUI({
-  if (USER$Logged == FALSE) {
-    dashboardHeader(title = h4("Calf Health Manager"),
-                    titleWidth = 200)
-  }
-  
-  else {
-    dashboardHeader(title = h4("Calf Health Manager"),
-                    titleWidth = 200)
-  }
-})
+
 
 # SidebarUI
 output$sidebarUI <- renderUI({
@@ -54,17 +43,18 @@ output$sidebarUI <- renderUI({
 # SidebarUI
 output$bodyUI <- renderUI({
   if (USER$Logged == FALSE) {list(
-    box(
-      title = "Login",
-      solidHeader = TRUE,
-      textInput("userName", "User Name:"),
-      passwordInput("passwd", "Password:"),
-      br(),
-      actionButton("Login", "Log in")
-    ),
-    #source custom CSS
-    source("./www/customCSS.R")$value
-  )
+    column(4, offset = 4,
+           wellPanel(
+             title = "Login",
+             solidHeader = TRUE,
+             textInput("userName", "User Name:"),
+             passwordInput("passwd", "Password:"),
+             br(),
+             actionButton("Login", "Log in")),
+           fluidRow(div(shinyalert("loginFailed", auto.close.after = 1),
+                                    style = "color:red"))
+             )
+    )
   }
   
   else {list(
@@ -95,9 +85,7 @@ output$bodyUI <- renderUI({
         # Settings
         settingsTabUI
       )
-    ),
-    # Add custom CSS
-    source("./www/customCSS.R")$value
+    )
   )
   }
 })
@@ -125,15 +113,16 @@ output$userPanel <- renderUI({
 observeEvent(input$Login , {
   Username <- isolate(input$userName)
   Password <- isolate(input$passwd)
-  Id.username <- which(PASSWORD$Brukernavn == Username)
-  Id.password <- which(PASSWORD$Passord    == Password)
+  Id.username <- which(PASSWORD$user == Username)
+  Id.password <- which(PASSWORD$password    == sha2(Password))
   if (length(Id.username) > 0 & length(Id.password) > 0) {
     if (Id.username == Id.password) {
       USER$Logged <- TRUE
       USER$name <- Username      
     } 
   } else {
-    USER$pass <- "User name or password failed!"
+    showshinyalert(session, "loginFailed", "Username or password failed",
+                   styleclass = "blank")
   }
 })
 

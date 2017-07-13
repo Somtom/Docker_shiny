@@ -2,6 +2,7 @@ require(shiny)
 require(shinydashboard)
 require(shinysky)
 require(shinyjs)
+require(openssl)
 
 
 # Get predefined input data
@@ -27,9 +28,11 @@ source("./functions/saveToCouchDB.R")
 shinyUI(
   dashboardPage(
     title = "Calf Health Manager",
-    dashboardHeader(),
-    dashboardSidebar(uiOutput("sidebarUI")),
-    dashboardBody(uiOutput("bodyUI"))
+    dashboardHeader(title = tags$p("Calf Health Manager",
+                                   style = "font-size:80%; font-weight:bold")),
+    dashboardSidebar(collapsed = TRUE, uiOutput("sidebarUI")),
+    dashboardBody(source("./www/customCSS.R")$value,
+                  uiOutput("bodyUI"))
   )
 )
 

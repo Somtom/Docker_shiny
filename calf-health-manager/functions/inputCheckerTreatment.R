@@ -1,11 +1,11 @@
 inputCheckerTreatment <- function(input, output, session) {
-  observeEvent(input$buttonConfirmTreatment, {
+  observeEvent(input$button_ConfirmTreatment, {
     
     output$inputCheckerTreatment <- renderText({
       validate(
         need(input$calfTreatment != "", "Please choose a calf"),
         need(input$eartagTreatment != "", "Please choose an eartag number"),
-        need(input$diagnosisTreatment != "", "Please choose a diagnosis"),
+        need(input$findingsTreatment != "", "Please choose a diagnosis"),
         if (input$checkReminderTreatment == TRUE) {
           need(input$nextTreatment, "Please provide days until next treatment for reminder")
         },

@@ -23,7 +23,7 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "eartagTreatment", 
                          label = "Ohrmarken-Nr.",
-                         choices = data$calves$eartags)
+                         choices = data$calves$eartag)
       ),
       column(4,
              conditionalPanel(
@@ -37,15 +37,22 @@ treatmentTabUI <-
     br(),
     fluidRow(
       column(4,
-             selectInput(inputId = "diagnosisTreatment",
-                         label = "Diagnose",
-                         choices = data$diseases)
+             selectInput(inputId = "findingsTreatment",
+                         label = "Befund",
+                         choices = data$findings)
       ),
       column(4,
              numericInput(inputId = "temperatureTreatment", 
                           label = "Koerpertemperatur",
                           value = "")
       ),
+      column(4,
+             selectInput(inputId = "diagnosisTreatment",
+                         label = "Aerztliche Diagnose",
+                         choices = data$diseases)
+      )
+    ),
+    fluidRow(
       column(4,
              textInput(inputId = "notesTreatment", 
                        label = "Notizen")
@@ -74,10 +81,10 @@ treatmentTabUI <-
                            choices = data$drugs)
         ),
         column(4,
-               numericInput(inputId = "waitingTimeTreatment", 
-                            label = "Wartezeit",
+               numericInput(inputId = "dosisTreatment",
+                            label = "Anwendungsmenge [ml]",
                             value = NA)
-        ),
+               ),
         column(4,
                conditionalPanel(
                  condition = "input.checkAuA == true",
@@ -86,6 +93,13 @@ treatmentTabUI <-
                               value = NA)
                )
         )
+      ),
+      fluidRow(
+        column(4,
+               numericInput(inputId = "waitingTimeTreatment", 
+                            label = "Wartezeit",
+                            value = NA)
+               )
       )
     ),
     hr(),
@@ -137,10 +151,11 @@ treatmentTabUI <-
       column(2,
              br(),
              br(),
-             actionButton(inputId = "buttonConfirmTreatment", label = "Fertig",
+             actionButton(inputId = "button_ConfirmTreatment", label = "Fertig",
                           styleclass = "danger"),
              br()
       )
     )
-  ))
+  ),
+  fluidRow())
   

@@ -1,5 +1,5 @@
 # Skript to change the blue skin to custom foerster CSS
-
+customCSS <- 
 tags$head(tags$style(HTML('
                           /* logo */
                           .skin-blue .main-header .logo {
@@ -24,6 +24,7 @@ tags$head(tags$style(HTML('
                           /* content wrapper */
                           .skin-blue .content-wrapper {
                           background-color: #78DC27;
+                          height: auto;
                           }
                           
                           /* active selected tab in the sidebarmenu */
@@ -53,6 +54,15 @@ tags$head(tags$style(HTML('
                           color:#fff;
                           background:#1e282c;
                           border-left-color:#363636
+                          }
+                          
+                          /* Select to input Box width when no element selected /*
+                          .select2-container-multi .select2-choices .select2-search-field{
+                          width : 80px;
+                          }
+                          
+                          .select2-container-multi .select2-choices .select2-search-field input{
+                          width : 80px;
                           }
                           ')
                      )

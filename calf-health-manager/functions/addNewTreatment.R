@@ -1,10 +1,10 @@
 addNewTreatment <- function(input, output, session, rv) {
   
-  observeEvent(input$buttonConfirmTreatment, {
+  observeEvent(input$button_ConfirmTreatment, {
     # Check if crutial provided
     if (input$calfTreatment == "") return(NULL)
     if (input$eartagTreatment == "") return(NULL)
-    if (input$diagnosisTreatment == "") return(NULL)
+    if (input$findingsTreatment == "") return(NULL)
     if (input$checkReminderTreatment == TRUE) {
       if (is.na(input$nextTreatment)) return(NULL)
     }
@@ -16,8 +16,10 @@ addNewTreatment <- function(input, output, session, rv) {
     newTreatment <-
       data.frame(date = input$dateTreatment,
                  type = "Befund",
+                 feeder = NA,
                  calf = NA,
                  eartag = NA,
+                 findings = NA,
                  diagnosis  = NA,
                  temperature = NA,
                  drug = NA,
@@ -32,6 +34,7 @@ addNewTreatment <- function(input, output, session, rv) {
     newTreatment$calf <- input$calfTreatment
     newTreatment$eartag <- input$eartagTreatment
     newTreatment$user <- input$userTreatment
+    newTreatment$findings <- input$findingsTreatment
     newTreatment$diagnosis <- input$diagnosisTreatment
     newTreatment$nextTreatment <- input$nextTreatment
     newTreatment$temperature <- input$temperatureTreatment

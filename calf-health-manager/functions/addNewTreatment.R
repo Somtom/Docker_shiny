@@ -4,7 +4,7 @@ addNewTreatment <- function(input, output, session, rv) {
     # Check if crutial provided
     if (input$calfTreatment == "") return(NULL)
     if (input$eartagTreatment == "") return(NULL)
-    if (input$diagnosisTreatment == "") return(NULL)
+    if (input$findingsTreatment == "") return(NULL)
     if (input$checkReminderTreatment == TRUE) {
       if (is.na(input$nextTreatment)) return(NULL)
     }

@@ -6,3 +6,11 @@ docker pull ACCOUNT/REPOSITORYNAME
 
 #start docker_shiny
 docker run --rm -p 3838:3838 REPOSITORYNAME
+
+
+
+
+
+### Docker couchDB
+# start couch db with "/var/lib/couchdb" as data volume
+docker run -d -p 5984 -v /var/lib/couchdb shykes/couchdb:2013-05-03

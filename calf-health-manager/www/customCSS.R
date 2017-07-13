@@ -1,5 +1,5 @@
 # Skript to change the blue skin to custom foerster CSS
-
+customCSS <- 
 tags$head(tags$style(HTML('
                           /* logo */
                           .skin-blue .main-header .logo {

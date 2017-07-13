@@ -21,14 +21,14 @@ treatmentTable <-
     feeder = as.character(c(121,56,121)),
     calf = c(2,10,4),
     eartag = c("DE0348770063", "DE0348770072", "DE0348770068"),
-    findings = c("high temperature", "abnormal fece", NA),
+    findings = c("high temperature", "abnormal fece", "high breathing frequency"),
     diagnosis = c("disease 1", "disease 2", NA),
     temperature = c(40.3, 38.9, NA),
-    drug = c("Medikament 1", NA, "Impfstoff 1"),
-    nextTreatment = c(NA, NA, 14),
+    drug = c("Medikament 1", NA, NA),
+    nextTreatment = c(2, NA, NA),
     waitingTime = c(10, NA, NA),
     AuANr = c(12345, NA, NA),
-    actions = c("Electrolyt 1, Medicine 2", NA, "Erinnerung"),
+    actions = c("Electrolyt 1, Medicine 2", NA, NA),
     user = c("Martin", "Martin", "Johanna"),
     notes = c(NA, "nur leichter Durchfall", NA)
   )
@@ -40,10 +40,14 @@ vaccinationTable <-
   feeder = as.character(c(121,56,121)),
   feedingDay = c(10, 8, 2),
   date = as.Date(c("2017-06-20", "2017-06-20", "2017-06-20")),
-  type = rep("Impfun",3),
+  type = rep("Impfung",3),
   purpose = rep("BHV", 3),
   batchNr = rep(123, 3),
   veterinary = rep("Dr.Huber", 3),
   notesVaccination = rep("", 3),
   actions = rep("Erinnerung", 3)
 )
+
+
+membership <- data.frame(
+  user = c("ft", "sam", "john", "kelly", "ben", "joe"))

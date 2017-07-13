@@ -17,7 +17,7 @@ data <- list(calves = data.frame(nr = c(1:30),
 treatmentTable <- 
   data.frame(
     date = as.Date(c("2017-06-20", "2017-06-25", "2017-06-30")),
-    type = c("Befund", "Befund", "Impfung"),
+    type = c("demoBefund", "demoBefund", "demoBefund"),
     feeder = as.character(c(121,56,121)),
     calf = c(2,10,4),
     eartag = c("DE0348770063", "DE0348770072", "DE0348770068"),
@@ -40,7 +40,7 @@ vaccinationTable <-
   feeder = as.character(c(121,56,121)),
   feedingDay = c(10, 8, 2),
   date = as.Date(c("2017-06-20", "2017-06-20", "2017-06-20")),
-  type = rep("Impfung",3),
+  type = rep("demoImpfung",3),
   purpose = rep("BHV", 3),
   batchNr = rep(123, 3),
   veterinary = rep("Dr.Huber", 3),

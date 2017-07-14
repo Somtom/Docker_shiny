@@ -58,15 +58,17 @@ vaccinationTabUI <-
               )
             ),
             fluidRow(
-              column(8,
+              column(12,
                      span(textOutput("inputCheckerVaccination"), style = "color:#ff3300"),
                      tags$head(tags$style("#inputCheckerVaccination{color: red;}"))
-              ),
-              column(4, align = "right",
+              )
+            ),
+              fluidRow(
+              column(12, align = "right", 
                      br(),
                      br(),
                      actionButton(inputId = "button_backToCalfListVaccination",
-                                  label = "Zurueck zu Kalbliste"),
+                                  label = "Zurueck zu Tierliste"),
                      tags$head(tags$style(
                        "#button_backToCalfListVaccination{background-color: #EFEFEF; border-color: #A3A3A3}")),
                      actionButton(inputId = "button_ConfirmVaccination", label = "Fertig",

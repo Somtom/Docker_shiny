@@ -219,7 +219,7 @@ shinyServer(function(input, output, session) {
   # Other links ----
   
   # Calf List links
-  # New Vaccination 
+  ## New Vaccination 
   observeEvent(input$button_newVaccination, {
     print("Button neue Gruppenimpfung")
     
@@ -234,7 +234,16 @@ shinyServer(function(input, output, session) {
     updateTabItems(session, "menuTabs", newtab)
   })
   
+  ## Back to Dashboard
+  observeEvent(input$button_backToDashboardCalfList, {
+    newtab <- switch(input$menuTabs,
+                     "calfList" = "dashboard"
+    )
+    updateTabItems(session, "menuTabs", newtab)
+  })
+  
   # Vaccination Links
+  ## Back to CalfList
   observeEvent(input$button_backToCalfListVaccination, {
     newtab <- switch(input$menuTabs,
                      "vaccination" = "calfList"
@@ -242,7 +251,14 @@ shinyServer(function(input, output, session) {
     updateTabItems(session, "menuTabs", newtab)
   })
   
-  
+  # Treatment Links
+  ## Back to Dashboard
+  observeEvent(input$button_backToDashboardTreatment, {
+    newtab <- switch(input$menuTabs,
+                     "treatment" = "dashboard"
+    )
+    updateTabItems(session, "menuTabs", newtab)
+  })
   
   
   

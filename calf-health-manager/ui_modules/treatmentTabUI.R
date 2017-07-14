@@ -144,14 +144,20 @@ treatmentTabUI <-
       ) 
     ),
     fluidRow(
-      column(10, 
+      column(12, 
              span(textOutput("inputCheckerTreatment"), style = "color:#ff3300"),
              tags$head(tags$style("#inputCheckerTreatment{color: red;}")),
              shinyalert("alertConfirmTreatment", auto.close.after = 2)
-      ),
-      column(2, align = "right",
+      )
+    ),
+    fluidRow(
+      column(12, align = "right", 
              br(),
              br(),
+             actionButton(inputId = "button_backToDashboardTreatment",
+                          label = "Dashboard"),
+             tags$head(tags$style(
+               "#button_backToDashboardTreatment{background-color: #EFEFEF; border-color: #A3A3A3}")),
              actionButton(inputId = "button_ConfirmTreatment", label = "Fertig",
                           styleclass = "danger"),
              br()

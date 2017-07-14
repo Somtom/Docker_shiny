@@ -8,6 +8,27 @@ calfListTabUI <-
     status = "warning",
     solidHeader = TRUE,
     fluidRow(
+      column(3, align = "left", 
+             actionButton(inputId = "button_backToDashboardCalfList",
+                          label = "Dashboard"),
+             tags$head(tags$style(
+               "#button_backToDashboardCalfList {background-color: #EFEFEF; border-color: #A3A3A3}"))
+      ),
+      column(1,br()),
+      column(3, align = "center",
+             actionButton(inputId = "button_newVaccination",
+                          label = "Tierliste impfen",
+                          styleclass = "warning")
+      ),
+      column(1,br()),
+      column(3, align = "center",
+             actionButton(inputId = "button_newGroupTreatment",
+                          label = "Tierliste behandeln",
+                          styleclass = "danger")
+      )
+    ),
+    hr(),
+    fluidRow(
       column(3,
              selectInput(inputId = "calfListFeeder",
                          label = "Automat",
@@ -29,20 +50,6 @@ calfListTabUI <-
                           value = NA)
       ),
       column(9,
-             fluidRow(
-               column(3, offset = 2, align = "center",
-                      actionButton(inputId = "button_newVaccination",
-                                   label = "Tierliste impfen",
-                                   styleclass = "warning")
-               ),
-               column(1,br()),
-               column(3, align = "center",
-                      actionButton(inputId = "button_newGroupTreatment",
-                                   label = "Tierliste behandeln",
-                                   styleclass = "danger")
-               )
-             ),
-             hr(),
              fluidRow(
                column(12,
                dataTableOutput("customCalfList")

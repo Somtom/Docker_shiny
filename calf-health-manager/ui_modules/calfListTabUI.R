@@ -30,19 +30,19 @@ calfListTabUI <-
       ),
       column(9,
              fluidRow(
-               column(4,
+               column(3, offset = 2, align = "center",
                       actionButton(inputId = "button_newVaccination",
                                    label = "Tierliste impfen",
                                    styleclass = "warning")
                ),
-               column(3, br()),
-               column(4,
+               column(1,br()),
+               column(3, align = "center",
                       actionButton(inputId = "button_newGroupTreatment",
                                    label = "Tierliste behandeln",
                                    styleclass = "danger")
                )
              ),
-             br(),
+             hr(),
              fluidRow(
                column(12,
                dataTableOutput("customCalfList")

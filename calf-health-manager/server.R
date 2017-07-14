@@ -1,17 +1,20 @@
 shinyServer(function(input, output, session) {
   
-  
-  # Login --------------
-  USER <- reactiveValues(Logged = FALSE , session = session$user) 
-  source("www/Login.R", local = TRUE)
-  
   # Custom reactive Values
   rv <- reactiveValues()
   rv$treatmentTable <- treatmentTable
   rv$vaccinationTable <- vaccinationTable
   rv$groupSelected <- FALSE
   
-  observeEvent(USER$Logged, updateTabItems(session, "menuTabs", "dashboard"))
+  # Login --------------
+  USER <- reactiveValues(Logged = FALSE , session = session$user) 
+  source("www/Login.R", local = TRUE)
+  
+
+  
+  observeEvent(USER$Logged, {
+    updateTabItems(session, "menuTabs", "dashboard")
+    })
   
   
   #Calf List ----
@@ -25,7 +28,9 @@ shinyServer(function(input, output, session) {
   
   
   observe({
-    if (is.null(input$calfListFeeder)) {
+    if (
+      is.null(input$calfListFeedingDaysMin)
+        ) {
       rv$CalfListFilter <- list(feeder = data$calves$feeder,
                                 calves = data$calves$nr,
                                 eartags = data$calves$eartag,

@@ -57,7 +57,7 @@ output$bodyUI <- renderUI({
     )
   }
   
-  else {list(
+  else { 
     list(
       useShinyjs(),
       tabItems(
@@ -86,7 +86,7 @@ output$bodyUI <- renderUI({
         settingsTabUI
       )
     )
-  )
+
   }
 })
 

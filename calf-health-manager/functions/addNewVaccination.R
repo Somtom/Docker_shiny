@@ -1,16 +1,12 @@
 addNewVaccination <- function(input, output, session, rv) {
   observeEvent(input$button_ConfirmVaccination, {
     
-    # # Check if crutial provided
-    # if (input$calfTreatment == "") return(NULL)
-    # if (input$eartagTreatment == "") return(NULL)
-    # if (input$diagnosisTreatment == "") return(NULL)
-    # if (input$checkReminderTreatment == TRUE) {
-    #   if (is.na(input$nextTreatment)) return(NULL)
-    # }
-    # if (input$choiceDrugtreatment == TRUE) {
-    #   if (input$drugTreatment == "") {return(NULL)}
-    # }
+    # Check if crutial provided
+    if (input$vaccinationPurpose == "") return(NULL)
+    if (input$vaccine == "") return(NULL)
+    if (input$checkReminderVaccination == TRUE) {
+      if (is.na(input$repeatVaccination)) return(NULL)
+    }
     
     # Create data.frame with empty values
     newVaccination <- rv$customCalfList

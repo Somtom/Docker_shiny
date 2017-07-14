@@ -18,18 +18,19 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "calfTreatment", 
                          label = "Kalbnummer",
-                         choices = data$calves$nr)
+                         choices = c("",data$calves$nr))
       ),
       column(4,
              selectInput(inputId = "eartagTreatment", 
                          label = "Ohrmarken-Nr.",
-                         choices = data$calves$eartag)
+                         choices = c("",data$calves$eartag))
       ),
       column(4,
              conditionalPanel(
                condition = "input.checkUserTreatment == true",
                textInput(inputId = "userTreatment",
-                         label = "Benutzer"))
+                         label = "Benutzer")
+               )
       )
     ),
     hr(),
@@ -39,7 +40,7 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "findingsTreatment",
                          label = "Befund",
-                         choices = data$findings)
+                         choices = c("",data$findings))
       ),
       column(4,
              numericInput(inputId = "temperatureTreatment", 
@@ -49,7 +50,7 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "diagnosisTreatment",
                          label = "Aerztliche Diagnose",
-                         choices = data$diseases)
+                         choices = c("",data$diseases))
       )
     ),
     fluidRow(
@@ -148,7 +149,7 @@ treatmentTabUI <-
              tags$head(tags$style("#inputCheckerTreatment{color: red;}")),
              shinyalert("alertConfirmTreatment", auto.close.after = 2)
       ),
-      column(2,
+      column(2, align = "right",
              br(),
              br(),
              actionButton(inputId = "button_ConfirmTreatment", label = "Fertig",

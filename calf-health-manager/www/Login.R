@@ -69,10 +69,11 @@ output$bodyUI <- renderUI({
                   valueBoxOutput("goToHistory", width = 6),
                   valueBoxOutput("goToSettings", width = 6)
                 ),
-                fluidRow(column(4, offset = 4,
-                                shinyalert("alertConfirmVaccination", auto.close.after = 2)
+                fluidRow(column(12, align = "center",
+                                div(shinyalert("alertConfirmVaccination", auto.close.after = 2),
+                                    style = "color:white; font-weight:bold")
                                 )
-                         )
+                )
         ),
         #CalfList
         calfListTabUI,

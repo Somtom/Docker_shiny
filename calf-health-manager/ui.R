@@ -22,6 +22,7 @@ source("./ui_modules/historyTabUI.R")$value
 source("./functions/addNewTreatment.R")
 source("./functions/addNewVaccination.R")
 source("./functions/inputCheckerTreatment.R")
+source("./functions/inputCheckerVaccination.R")
 source("./functions/saveToCouchDB.R")
 
 # Defining the UI

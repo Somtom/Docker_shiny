@@ -21,6 +21,7 @@ shinyServer(function(input, output, session) {
   
   # Check and add Treatment / Vaccination
   inputCheckerTreatment(input, output, session)
+  inputCheckerVaccination(input, output, session)
   addNewTreatment(input, output, session, rv)
   addNewVaccination(input, output, session, rv)
   
@@ -28,9 +29,7 @@ shinyServer(function(input, output, session) {
   
   
   observe({
-    if (
-      is.null(input$calfListFeedingDaysMin)
-        ) {
+    if (is.null(input$calfListFeedingDaysMin)) {
       rv$CalfListFilter <- list(feeder = data$calves$feeder,
                                 calves = data$calves$nr,
                                 eartags = data$calves$eartag,
@@ -231,6 +230,14 @@ shinyServer(function(input, output, session) {
     # Switch Tabs
     newtab <- switch(input$menuTabs,
                      "calfList" = "vaccination"
+    )
+    updateTabItems(session, "menuTabs", newtab)
+  })
+  
+  # Vaccination Links
+  observeEvent(input$button_backToCalfListVaccination, {
+    newtab <- switch(input$menuTabs,
+                     "vaccination" = "calfList"
     )
     updateTabItems(session, "menuTabs", newtab)
   })

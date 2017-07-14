@@ -18,7 +18,7 @@ vaccinationTabUI <-
               column(4,
                      selectInput(inputId = "vaccinationPurpose",
                                  label = "Zweck der Impfung",
-                                 choices = data$vaccinationPurpose)
+                                 choices = c("",data$vaccinationPurpose))
               ),
               column(4,
                      textInput(inputId = "notesVaccination",
@@ -29,7 +29,7 @@ vaccinationTabUI <-
               column(4,
                      selectInput(inputId = "vaccine",
                                  label = "Impfstoff",
-                                 choices = data$vaccines)
+                                 choices = c("",data$vaccines))
               ),
               column(4,
                      textInput(inputId = "batchNumberVaccination",
@@ -58,19 +58,24 @@ vaccinationTabUI <-
               )
             ),
             fluidRow(
-              column(10
-                     # span(textOutput("inputCheckerTreatment"), style = "color:#ff3300"),
-                     # tags$head(tags$style("#inputCheckerTreatment{color: red;}")),
+              column(8,
+                     span(textOutput("inputCheckerVaccination"), style = "color:#ff3300"),
+                     tags$head(tags$style("#inputCheckerVaccination{color: red;}"))
               ),
-              column(2, 
+              column(4, align = "right",
                      br(),
                      br(),
+                     actionButton(inputId = "button_backToCalfListVaccination",
+                                  label = "Zurueck zu Kalbliste"),
+                     tags$head(tags$style(
+                       "#button_backToCalfListVaccination{background-color: #EFEFEF; border-color: #A3A3A3}")),
                      actionButton(inputId = "button_ConfirmVaccination", label = "Fertig",
                                   styleclass = "warning"),
                      br()
               )
             )
           ))),
+          # emergency warning if someone got to vaccination tab without filtering
           div(id = "selectCalvesInfoVaccination", box(
             title = "Hinweis",
             width = 12,            

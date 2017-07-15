@@ -28,6 +28,7 @@ source("./functions/viewFromCouchDB.R")
 
 
 
+
 # Defining the UI
 shinyUI(
   dashboardPage(

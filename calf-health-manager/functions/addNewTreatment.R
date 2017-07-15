@@ -55,7 +55,7 @@ addNewTreatment <- function(input, output, session, rv, USER) {
     )
     
     #write treatment into couchDB
-    saveToCouchDB(newTreatment)
+    saveToCouchDB(newTreatment, serverName = couchIP)
     
     # add treatment to old table
     rv$treatmentTable <- rbind(rv$treatmentTable, newTreatment)

@@ -27,7 +27,7 @@ addNewVaccination <- function(input, output, session, rv, USER) {
     newVaccination$user <- USER$name
     
     #write vaccination into couchDB
-    saveToCouchDB(newVaccination, serverName = "localhost")
+    saveToCouchDB(newVaccination, serverName = couchIP)
     
     # add vaccination to old table
     rv$vaccinationTable <- rbind(rv$vaccinationTable, newVaccination)

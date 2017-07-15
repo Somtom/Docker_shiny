@@ -1,6 +1,6 @@
 viewFromCouchDB <- function(designDoc,
                             view,
-                            serverName = "172.18.0.23",
+                            serverName = "localhost",
                             port = 5984,
                             DBName = "foerster-health-documentation",
                             queryParam = NA) {

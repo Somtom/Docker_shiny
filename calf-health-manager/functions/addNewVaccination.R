@@ -1,13 +1,12 @@
 addNewVaccination <- function(input, output, session, rv, USER) {
   observeEvent(input$button_ConfirmVaccination, {
-    shinyjs::disable("button_ConfirmVaccination")
-    
     # Check if crutial provided
     if (input$vaccinationPurpose == "") return(NULL)
     if (input$vaccine == "") return(NULL)
     if (input$checkReminderVaccination == TRUE) {
       if (is.na(input$repeatVaccination)) return(NULL)
     }
+    shinyjs::disable("button_ConfirmVaccination")
     
     # Create data.frame with empty values
     newVaccination <- rv$customCalfList
@@ -27,7 +26,7 @@ addNewVaccination <- function(input, output, session, rv, USER) {
     newVaccination$user <- USER$name
     
     #write vaccination into couchDB
-    saveToCouchDB(newVaccination, serverName = couchIP)
+    saveToCouchDB(newVaccination, serverName = "localhost")
     
     # add vaccination to old table
     rv$vaccinationTable <- rbind(rv$vaccinationTable, newVaccination)

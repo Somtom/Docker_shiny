@@ -1,5 +1,4 @@
 shinyServer(function(input, output, session) {
-  couchIP <- "172.18.0.23"
   
   # Custom reactive Values
   rv <- reactiveValues()
@@ -16,7 +15,7 @@ shinyServer(function(input, output, session) {
       rv$treatmentTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "findings",
-                        serverName = couchIP,
+                        serverName = "localhost",
                         queryParam = paste0('key=["finding", \"',
                                             USER$name,
                                             '\"]'))
@@ -24,7 +23,7 @@ shinyServer(function(input, output, session) {
       rv$vaccinationTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "vaccinations",
-                        serverName = couchIP,
+                        serverName = "localhost",
                         queryParam = paste0('key=["vaccination", \"',
                                             USER$name,
                                             '\"]'))

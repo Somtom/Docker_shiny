@@ -9,21 +9,24 @@ shinyServer(function(input, output, session) {
   
   
   observeEvent(USER$Logged, {
-    updateTabItems(session, "menuTabs", "dashboard")
-    
-    rv$treatmentTable <- viewFromCouchDB(designDoc  = "typeFilter",
-                                         view = "findings",
-                                         serverName = "localhost",
-                                         queryParam = paste0('key=["finding", \"',
-                                                             USER$name,
-                                                             '\"]'))
-    
-    rv$vaccinationTable <- viewFromCouchDB(designDoc  = "typeFilter",
-                                           view = "vaccinations",
-                                           serverName = "localhost",
-                                           queryParam = paste0('key=["vaccination", \"',
-                                                               USER$name,
-                                                               '\"]'))
+    if(USER$Logged) {
+      updateTabItems(session, "menuTabs", "dashboard")
+      rv$treatmentTable <- 
+        viewFromCouchDB(designDoc  = "typeFilter",
+                        view = "findings",
+                        serverName = "localhost",
+                        queryParam = paste0('key=["finding", \"',
+                                            USER$name,
+                                            '\"]'))
+      
+      rv$vaccinationTable <- 
+        viewFromCouchDB(designDoc  = "typeFilter",
+                        view = "vaccinations",
+                        serverName = "localhost",
+                        queryParam = paste0('key=["vaccination", \"',
+                                            USER$name,
+                                            '\"]'))
+      }
     })
   
   

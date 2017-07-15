@@ -19,10 +19,17 @@ viewFromCouchDB <- function(designDoc,
   }
   
   out <- cdbGetView(db)
+  out <- lapply(out$res$rows, function(x) x$value)
+  if (length(out) == 0) {
+    print("Debug: No Data found in CouchDB for")
+    return(NA)}
   
-  res <- rbindlist((lapply(out$res$rows, function(x) x$value)), fill = T)
-  res <- res[,-c("_id", "_rev")]
-  res <- data.frame(res)
-  return(res)
+  if (length(out) == 1 ) { return(unlist(out)) }
   
+  else {
+    res <- rbindlist(out, fill = T)
+    res <- res[,-c("_id", "_rev")]
+    res <- data.frame(res)
+    return(res)
+  }
 }

@@ -1,12 +1,5 @@
 #### Log in module ###
 
-PASSWORD <- data.frame(
-  user = c("test"), 
-  password = c("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08")
-)
-
-
-
 # SidebarUI
 output$sidebarUI <- renderUI({
   if (USER$Logged == FALSE) {
@@ -114,13 +107,13 @@ output$userPanel <- renderUI({
 observeEvent(input$Login , {
   Username <- isolate(input$userName)
   Password <- isolate(input$passwd)
-  Id.username <- which(PASSWORD$user == Username)
-  Id.password <- which(PASSWORD$password    == sha2(Password))
-  if (length(Id.username) > 0 & length(Id.password) > 0) {
-    if (Id.username == Id.password) {
+  pwdDB <- viewFromCouchDB(designDoc = "user", view = "passwd", "localhost",
+                           queryParam = paste0('key=\"',
+                                               Username,
+                                               '\"'))
+    if (sha2(Password) == pwdDB) {
       USER$Logged <- TRUE
       USER$name <- Username
-    } 
   } else {
     showshinyalert(session, "loginFailed", "Username or password failed",
                    styleclass = "blank")

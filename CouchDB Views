@@ -1,0 +1,15 @@
+CouchDB Views
+
+# Design Document "typeFilter"
+## View "findings"
+  function(doc) {
+   if(doc.type === "finding") {
+     emit([doc.type,doc.user], doc);
+   }
+
+## View "vaccinations"
+  function(doc) {
+ if(doc.type === "vaccination") {
+   emit([doc.type,doc.user], doc);
+ }
+}

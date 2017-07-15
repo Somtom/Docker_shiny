@@ -21,7 +21,7 @@ viewFromCouchDB <- function(designDoc,
   out <- cdbGetView(db)
   out <- lapply(out$res$rows, function(x) x$value)
   if (length(out) == 0) {
-    print("Debug: No Data found in CouchDB for")
+    print("Debug: No Data found in CouchDB")
     return(NA)}
   
   if (length(out) == 1 ) { return(unlist(out)) }

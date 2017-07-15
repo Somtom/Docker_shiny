@@ -4,13 +4,15 @@ docker login
 #pull repository
 docker pull ACCOUNT/REPOSITORYNAME  
 
-#start docker_shiny
-docker run --rm -p 3838:3838 REPOSITORYNAME
+##start docker_shiny without auto restart
+docker run -d --rm -p 3838:3838 REPOSITORYNAME
+
+##start docker_shiny with auto restart
 
 
 
 
 
-### Docker couchDB
-# start couch db with "/var/lib/couchdb" as data volume
-docker run -d -p 5984 -v /var/lib/couchdb shykes/couchdb:2013-05-03
+# Docker couchDB
+## start couch db with "/usr/local/var/lib/couchdb" as data volume WIHTOUT AUTO RESTART
+docker run -d -p 5984:5984 -v /usr/local/var/lib/couchdb --name DBNAME couchdb

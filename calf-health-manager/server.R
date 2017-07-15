@@ -62,7 +62,7 @@ shinyServer(function(input, output, session) {
     
     #eartag
     if (is.null(input$calfListEartag)) {eartags = data$calves$eartag}
-    else {eartag = input$calfListEartag}
+    else {eartag = input$calfListEartags}
     
     #feeding days
     if (is.na(input$calfListFeedingDaysMin) & is.na(input$calfListFeedingDaysMax)) {

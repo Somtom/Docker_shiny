@@ -1,4 +1,5 @@
 shinyServer(function(input, output, session) {
+  couchIP <- "172.18.0.23"
   
   # Custom reactive Values
   rv <- reactiveValues()
@@ -15,7 +16,7 @@ shinyServer(function(input, output, session) {
       rv$treatmentTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "findings",
-                        serverName = "localhost",
+                        serverName = couchIP,
                         queryParam = paste0('key=["finding", \"',
                                             USER$name,
                                             '\"]'))
@@ -23,7 +24,7 @@ shinyServer(function(input, output, session) {
       rv$vaccinationTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "vaccinations",
-                        serverName = "localhost",
+                        serverName = couchIP,
                         queryParam = paste0('key=["vaccination", \"',
                                             USER$name,
                                             '\"]'))
@@ -34,8 +35,8 @@ shinyServer(function(input, output, session) {
   # Check and add Treatment / Vaccination
   inputCheckerTreatment(input, output, session)
   inputCheckerVaccination(input, output, session)
-  addNewTreatment(input, output, session, rv, USER)
-  addNewVaccination(input, output, session, rv, USER)
+  addNewTreatment(input, output, session, rv, USER, couchIP)
+  addNewVaccination(input, output, session, rv, USER, couchIP)
   
   
   
@@ -61,8 +62,8 @@ shinyServer(function(input, output, session) {
     else {calves = input$calfListCalves}
     
     #eartag
-    if (is.null(input$calfListEartag)) {eartags = data$calves$eartag}
-    else {eartag = input$calfListEartags}
+    if (is.null(input$calfListEartags)) {eartags = data$calves$eartag}
+    else {eartags = input$calfListEartags}
     
     #feeding days
     if (is.na(input$calfListFeedingDaysMin) & is.na(input$calfListFeedingDaysMax)) {

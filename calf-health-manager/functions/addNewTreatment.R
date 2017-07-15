@@ -1,5 +1,5 @@
-addNewTreatment <- function(input, output, session, rv, USER) {
-  
+addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
+
   observeEvent(input$button_ConfirmTreatment, {
     # Check if crutial provided
     if (input$calfTreatment == "") return(NULL)
@@ -55,7 +55,7 @@ addNewTreatment <- function(input, output, session, rv, USER) {
     )
     
     #write treatment into couchDB
-    saveToCouchDB(newTreatment, serverName = "localhost")
+    saveToCouchDB(newTreatment, serverName = couchIP)
     
     # add treatment to old table
     rv$treatmentTable <- rbind(rv$treatmentTable, newTreatment)

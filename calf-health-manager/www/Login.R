@@ -108,7 +108,7 @@ observeEvent(input$Login , {
   Username <- isolate(input$userName)
   Password <- isolate(input$passwd)
   pwdDB <- viewFromCouchDB(designDoc = "user", view = "passwd",
-                           serverName = "localhost",
+                           serverName = couchIP,
                            queryParam = paste0('key=\"',
                                                Username,
                                                '\"'))

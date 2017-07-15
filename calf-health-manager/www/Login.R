@@ -107,7 +107,7 @@ output$userPanel <- renderUI({
 observeEvent(input$Login , {
   Username <- isolate(input$userName)
   Password <- isolate(input$passwd)
-  pwdDB <- viewFromCouchDB(designDoc = "user", view = "passwd", "localhost",
+  pwdDB <- viewFromCouchDB(designDoc = "user", view = "passwd",
                            queryParam = paste0('key=\"',
                                                Username,
                                                '\"'))

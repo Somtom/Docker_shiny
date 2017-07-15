@@ -1,5 +1,5 @@
 saveToCouchDB <- function(dt,
-                          serverName,
+                          serverName = "172.18.0.23",
                           port = 5984,
                           DBName = "foerster-health-documentation") {
   require(R4CouchDB)

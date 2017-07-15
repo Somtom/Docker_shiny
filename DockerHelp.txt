@@ -4,8 +4,11 @@ docker login
 #pull repository
 docker pull ACCOUNT/REPOSITORYNAME  
 
-##start docker_shiny without auto restart
-docker run -d --rm -p 3838:3838 REPOSITORYNAME
+#create network
+docker network create --subnet=172.18.0.0/16 containerNet
+
+##start docker_shiny in usernetwork without auto restart
+docker run -d --rm -p 3838:3838 --net containerNet --ip 172.18.0.22 REPOSITORYNAME
 
 ##start docker_shiny with auto restart
 
@@ -14,5 +17,8 @@ docker run -d --rm -p 3838:3838 REPOSITORYNAME
 
 
 # Docker couchDB
-## start couch db with "/usr/local/var/lib/couchdb" as data volume WIHTOUT AUTO RESTART
-docker run -d -p 5984:5984 -v /usr/local/var/lib/couchdb --name DBNAME couchdb
+## start couch db and creates "couchdb" folder in current directory as data volume WIHTOUT AUTO RESTART:
+docker run -d -p 5984:5984 --net containerNet --ip 172.18.0.23 -v $(pwd)/couchdb:/usr/local/var/lib/couchdb --name DBNAME couchdb
+
+##WITH AUTO RESTART:
+docker run -d -p 5984:5984 --net containerNet --ip 172.18.0.23 --restart=always -v $(pwd)/couchdb:/usr/local/var/lib/couchdb --name DBNAME couchdb

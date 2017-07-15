@@ -14,7 +14,6 @@ shinyServer(function(input, output, session) {
       rv$treatmentTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "findings",
-                        serverName = "localhost",
                         queryParam = paste0('key=["finding", \"',
                                             USER$name,
                                             '\"]'))
@@ -22,7 +21,6 @@ shinyServer(function(input, output, session) {
       rv$vaccinationTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "vaccinations",
-                        serverName = "localhost",
                         queryParam = paste0('key=["vaccination", \"',
                                             USER$name,
                                             '\"]'))

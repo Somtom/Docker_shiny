@@ -24,6 +24,9 @@ source("./functions/addNewVaccination.R")
 source("./functions/inputCheckerTreatment.R")
 source("./functions/inputCheckerVaccination.R")
 source("./functions/saveToCouchDB.R")
+source("./functions/viewFromCouchDB.R")
+
+
 
 # Defining the UI
 shinyUI(

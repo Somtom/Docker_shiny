@@ -1,4 +1,4 @@
-addNewTreatment <- function(input, output, session, rv) {
+addNewTreatment <- function(input, output, session, rv, USER) {
   
   observeEvent(input$button_ConfirmTreatment, {
     # Check if crutial provided
@@ -12,10 +12,12 @@ addNewTreatment <- function(input, output, session, rv) {
       if (input$drugTreatment == "") {return(NULL)}
     }
     
+    shinyjs::disable("button_ConfirmTreatment")
+    
     # Create data.frame with empty values
     newTreatment <-
       data.frame(date = input$dateTreatment,
-                 type = "Befund",
+                 type = "finding",
                  feeder = NA,
                  calf = NA,
                  eartag = NA,
@@ -27,13 +29,14 @@ addNewTreatment <- function(input, output, session, rv) {
                  waitingTime = NA,
                  AuANr = NA,
                  actions = NA,
-                 user = NA,
+                 observer = NA,
+                 user = USER$name,
                  notes = input$notesTreatment)
     
     # Assign input values to newTreatment table
     newTreatment$calf <- input$calfTreatment
     newTreatment$eartag <- input$eartagTreatment
-    newTreatment$user <- input$userTreatment
+    newTreatment$observer <- input$observerTreatment
     newTreatment$findings <- input$findingsTreatment
     newTreatment$diagnosis <- input$diagnosisTreatment
     newTreatment$nextTreatment <- input$nextTreatment
@@ -51,6 +54,8 @@ addNewTreatment <- function(input, output, session, rv) {
                                   ifelse(input$checkGiveMedicine, input$medicineRecipie, "")
     )
     
+    #write treatment into couchDB
+    saveToCouchDB(newTreatment, serverName = "localhost")
     
     # add treatment to old table
     rv$treatmentTable <- rbind(rv$treatmentTable, newTreatment)
@@ -63,5 +68,8 @@ addNewTreatment <- function(input, output, session, rv) {
     # user information
     showshinyalert(session, "alertConfirmTreatment", "Treatment successfully saved",
                    styleclass = "blank")
+    
+    shinyjs::enable("button_ConfirmTreatment")
+    
   })
 }

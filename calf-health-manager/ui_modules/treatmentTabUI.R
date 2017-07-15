@@ -18,18 +18,18 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "calfTreatment", 
                          label = "Kalbnummer",
-                         choices = c("",data$calves$nr))
+                         choices = c("", data$calves$nr))
       ),
       column(4,
              selectInput(inputId = "eartagTreatment", 
                          label = "Ohrmarken-Nr.",
-                         choices = c("",data$calves$eartag))
+                         choices = c("", data$calves$eartag))
       ),
       column(4,
              conditionalPanel(
                condition = "input.checkUserTreatment == true",
-               textInput(inputId = "userTreatment",
-                         label = "Benutzer")
+               textInput(inputId = "observerTreatment",
+                         label = "Beobachter")
                )
       )
     ),

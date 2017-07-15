@@ -119,7 +119,7 @@ observeEvent(input$Login , {
   if (length(Id.username) > 0 & length(Id.password) > 0) {
     if (Id.username == Id.password) {
       USER$Logged <- TRUE
-      USER$name <- Username      
+      USER$name <- Username
     } 
   } else {
     showshinyalert(session, "loginFailed", "Username or password failed",

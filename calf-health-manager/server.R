@@ -1,32 +1,42 @@
 shinyServer(function(input, output, session) {
-  
   # Custom reactive Values
   rv <- reactiveValues()
-  rv$treatmentTable <- treatmentTable
-  rv$vaccinationTable <- vaccinationTable
-  rv$groupSelected <- FALSE
-  
+
   # Login --------------
   USER <- reactiveValues(Logged = FALSE , session = session$user) 
   source("www/Login.R", local = TRUE)
   
-
+  
   
   observeEvent(USER$Logged, {
     updateTabItems(session, "menuTabs", "dashboard")
+    
+    rv$treatmentTable <- viewFromCouchDB(designDoc  = "typeFilter",
+                                         view = "findings",
+                                         serverName = "localhost",
+                                         queryParam = paste0('key=["finding", \"',
+                                                             USER$name,
+                                                             '\"]'))
+    
+    rv$vaccinationTable <- viewFromCouchDB(designDoc  = "typeFilter",
+                                           view = "vaccinations",
+                                           serverName = "localhost",
+                                           queryParam = paste0('key=["vaccination", \"',
+                                                               USER$name,
+                                                               '\"]'))
     })
   
-  
-  #Calf List ----
   
   # Check and add Treatment / Vaccination
   inputCheckerTreatment(input, output, session)
   inputCheckerVaccination(input, output, session)
-  addNewTreatment(input, output, session, rv)
-  addNewVaccination(input, output, session, rv)
+  addNewTreatment(input, output, session, rv, USER)
+  addNewVaccination(input, output, session, rv, USER)
   
   
   
+  
+  #Calf List ----
   
   observe({
     if (is.null(input$calfListFeedingDaysMin)) {
@@ -89,12 +99,6 @@ shinyServer(function(input, output, session) {
   # History Tables -----
   
   ## Findings / Treatments
-  CustomTreatmentTable <- reactive({
-    selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
-                                                       "Datum", "Kalb", "Diagnose", "Art")
-    rv$treatmentTable[selectedColumns]
-    
-    print(rv$treatmentTable)})
   
   output$historyTable <- 
     renderDataTable({

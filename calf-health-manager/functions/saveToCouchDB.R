@@ -1,5 +1,5 @@
 saveToCouchDB <- function(dt,
-                          serverName = "192.168.158.129",
+                          serverName,
                           port = 5984,
                           DBName = "foerster-health-documentation") {
   require(R4CouchDB)
@@ -18,7 +18,10 @@ saveToCouchDB <- function(dt,
                     push.data[[i]]$type,
                     ".",
                     push.data[[i]]$eartag,
-                    ":",as.integer(as.POSIXct(push.data[[i]]$date)))
+                    ":",
+                    as.integer(as.POSIXct(push.data[[i]]$date)),
+                    ":",
+                    as.integer(Sys.time()))
     db <- cdbUpdateDoc(db)
   }
   

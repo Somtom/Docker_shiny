@@ -29,7 +29,8 @@ treatmentTable <-
     waitingTime = c(10, NA, NA),
     AuANr = c(12345, NA, NA),
     actions = c("Electrolyt 1, Medicine 2", NA, NA),
-    user = c("Martin", "Martin", "Johanna"),
+    observer = c("Martin", "Martin", "Johanna"),
+    user = rep("demo",3),
     notes = c(NA, "nur leichter Durchfall", NA)
   )
 
@@ -45,5 +46,6 @@ vaccinationTable <-
   batchNr = rep(123, 3),
   veterinary = rep("Dr.Huber", 3),
   notesVaccination = rep("", 3),
-  actions = rep("Erinnerung", 3)
+  actions = rep("Erinnerung", 3),
+  user = rep("demo", 3)
 )

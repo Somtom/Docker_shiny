@@ -1,5 +1,6 @@
-addNewVaccination <- function(input, output, session, rv) {
+addNewVaccination <- function(input, output, session, rv, USER) {
   observeEvent(input$button_ConfirmVaccination, {
+    shinyjs::disable("button_ConfirmVaccination")
     
     # Check if crutial provided
     if (input$vaccinationPurpose == "") return(NULL)
@@ -14,7 +15,7 @@ addNewVaccination <- function(input, output, session, rv) {
     nCalves <- dim(newVaccination)[1]
     
     newVaccination$date <- rep(input$dateVaccination, nCalves) 
-    newVaccination$type <- rep("Impfung", nCalves)
+    newVaccination$type <- rep("vaccination", nCalves)
     newVaccination$purpose <- rep(input$vaccinationPurpose, nCalves)
     newVaccination$batchNr <- rep(input$batchNumberVaccination, nCalves)
     newVaccination$veterinary <- rep(input$vetVaccination, nCalves)
@@ -23,6 +24,10 @@ addNewVaccination <- function(input, output, session, rv) {
                                                "Erinnerung",
                                                "")),
                                   nCalves)
+    newVaccination$user <- USER$name
+    
+    #write vaccination into couchDB
+    saveToCouchDB(newVaccination, serverName = "localhost")
     
     # add vaccination to old table
     rv$vaccinationTable <- rbind(rv$vaccinationTable, newVaccination)
@@ -31,6 +36,8 @@ addNewVaccination <- function(input, output, session, rv) {
     # set values to default for next Treatment
     shinyjs::reset("boxVaccination")
     print("Debug: Vaccination values reset")
+    
+
     
     # hide dynamic UI
     shinyjs::hide(id = "dynamicVaccinationUI")
@@ -44,6 +51,8 @@ addNewVaccination <- function(input, output, session, rv) {
     # user information
     showshinyalert(session, "alertConfirmVaccination", "Vaccination successfully saved",
                    styleclass = "blank")
+    
+    shinyjs::enable("button_ConfirmVaccination")
   })
 
 }

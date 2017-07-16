@@ -8,14 +8,7 @@ calfListTabUI <-
     status = "warning",
     solidHeader = TRUE,
     fluidRow(
-      column(3, align = "left", 
-             actionButton(inputId = "button_backToDashboardCalfList",
-                          label = "Dashboard"),
-             tags$head(tags$style(
-               "#button_backToDashboardCalfList {background-color: #EFEFEF; border-color: #A3A3A3}"))
-      ),
-      column(1,br()),
-      column(3, align = "center",
+      column(3, align = "center", offset = 4,
              actionButton(inputId = "button_newVaccination",
                           label = "Tierliste impfen",
                           styleclass = "warning")

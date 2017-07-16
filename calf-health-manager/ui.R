@@ -20,14 +20,16 @@ source("./ui_modules/historyTabUI.R")$value
 
 
 # Source functions
-source("./functions/addNewTreatment.R")
-source("./functions/addNewVaccination.R")
-source("./functions/inputCheckerTreatment.R")
-source("./functions/inputCheckerVaccination.R")
-source("./functions/saveToCouchDB.R")
-source("./functions/viewFromCouchDB.R")
-
-
+source("./server_functions/addNewTreatment.R")
+source("./server_functions/addNewVaccination.R")
+source("./server_functions/inputCheckerTreatment.R")
+source("./server_functions/inputCheckerVaccination.R")
+source("./server_functions/saveToCouchDB.R")
+source("./server_functions/viewFromCouchDB.R")
+source("./server_functions/getHistoryData.R")
+source("./server_functions/calfListFilter.R")
+source("./server_functions/renderHistoryTables.R")
+source("./server_functions/matchSelectedAnimalInfo.R")
 
 
 # Defining the UI

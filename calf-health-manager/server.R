@@ -8,38 +8,17 @@ shinyServer(function(input, output, session) {
   USER <- reactiveValues(Logged = FALSE , session = session$user) 
   source("www/Login.R", local = TRUE)
   
+  # Match Animal Information (Nr and Eartag) on Treatment Table
+  matchSelectedAnimalInfo(input, session, data)
   
-  # Get history table information for logged in User
-  observeEvent(USER$Logged, {
-    if(USER$Logged) {
-      updateTabItems(session, "menuTabs", "dashboard")
-      rv$treatmentTable <- 
-        viewFromCouchDB(designDoc  = "typeFilter",
-                        view = "findings",
-                        serverName = couchIP,
-                        queryParam = paste0('key=["finding", \"',
-                                            USER$name,
-                                            '\"]'))
-      
-      rv$vaccinationTable <- 
-        viewFromCouchDB(designDoc  = "typeFilter",
-                        view = "vaccinations",
-                        serverName = couchIP,
-                        queryParam = paste0('key=["vaccination", \"',
-                                            USER$name,
-                                            '\"]'))
-      }
-    })
-  
-  
-  # Check and add Treatment / Vaccination
+  # Get history table information for logged in User----
+  getHistoryData(input, session, rv, USER, couchIP)
+
+  # Check and add Treatment / Vaccination----
   inputCheckerTreatment(input, output, session)
   inputCheckerVaccination(input, output, session)
   addNewTreatment(input, output, session, rv, USER, couchIP)
   addNewVaccination(input, output, session, rv, USER, couchIP)
-  
-  
-  
   
   # DropDown Menus----
   observe(
@@ -72,90 +51,12 @@ shinyServer(function(input, output, session) {
   )
   
   
-  # Calf List Filter and filtered output ----
-  observe({
-    # show all if UI is not rendered yet
-    if (is.null(input$calfListFeedingDaysMin)) {
-      rv$CalfListFilter <- list(feeder = data$calves$feeder,
-                                calves = data$calves$nr,
-                                eartags = data$calves$eartag,
-                                feedingDays = data$calves$feedingDay
-      )
-      return()
-    }
-    
-    #feeder
-    if (is.null(input$calfListFeeder)) {feeder = data$calves$feeder}
-    else {feeder = input$calfListFeeder}
-    
-    #calves
-    if (is.null(input$calfListCalves)) {calves = data$calves$nr}
-    else {calves = input$calfListCalves}
-    
-    #eartag
-    if (is.null(input$calfListEartags)) {eartags = data$calves$eartag}
-    else {eartags = input$calfListEartags}
-    
-    #feeding days
-    if (is.na(input$calfListFeedingDaysMin) & is.na(input$calfListFeedingDaysMax)) {
-      feedingDays <- data$calves$feedingDay
-    }
-    else if (is.na(input$calfListFeedingDaysMin)) {
-      feedingDays <- 0:input$calfListFeedingDaysMax
-    }
-    else if (is.na(input$calfListFeedingDaysMax)) {
-      feedingDays <- input$calfListFeedingDaysMin:max(data$calves$feedingDay, na.rm = T)
-    }
-    else {feedingDays <- input$calfListFeedingDaysMin:input$calfListFeedingDaysMax}
-    
-    rv$CalfListFilter <-    list(feeder = feeder,
-                                 calves = calves,
-                                 eartags = eartags,
-                                 feedingDays = feedingDays
-    )
-  })
+  # Calf List Filter and filtered output----
+  calfListFilter(input, output, session, rv, data)
   
+  # Render history tables -----
+  renderHistoryTables(input, output, session, rv)
   
-  
-  output$customCalfList <- renderDataTable(
-    rv$customCalfList <- subset(data$calves,
-                                feeder %in% rv$CalfListFilter$feeder
-                                & nr %in% rv$CalfListFilter$calves
-                                & eartag %in% rv$CalfListFilter$eartags
-                                & feedingDay %in% rv$CalfListFilter$feedingDays
-    ),
-    options = list(pageLength = 50,
-                   dom = "bottomp")
-  )
-  
-  
-  # History Tables -----
-  
-  ## Findings / Treatments
-  output$historyTable <- 
-    renderDataTable({
-      selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
-                                                         "date", "type", "calf", "eartag", "diagnosis")
-      rv$treatmentTable[selectedColumns]},
-      options = list(scrollX = TRUE)
-    )
-  
-  ## Vaccinations
-  # CustomVaccinationTable <- reactive({
-  #   selectedColumns <- names(rv$vaccinationTable) %in% c(input$checkHistoryTable,
-  #                                                      "Datum", "Kalb", "Diagnose", "Art")
-  #   rv$treatmentTable[selectedColumns]
-  #   
-  #   print(rv$treatmentTable)})
-  
-  output$vaccinationTable <- 
-    renderDataTable({
-      # selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
-      #                                                    "date", "type", "calf", "eartag", "diagnosis")
-      # rv$treatmentTable[selectedColumns]},
-      rv$vaccinationTable},
-      options = list(scrollX = TRUE)
-    )
   
   # Dashboard Link Boxes ---------------------------------------------------- 
   # Treatment Link Box

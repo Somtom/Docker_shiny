@@ -8,7 +8,7 @@ settingsTabUI <-
               solidHeader = TRUE,
               "Personalisiere angezeigten Eingabefelder",
               checkboxInput(inputId = "checkUserTreatment",
-                            label = "Benutzer",
+                            label = "Beobachter",
                             value = TRUE),
               checkboxInput(inputId = "checkAuA",
                             label = "AuA-Nr",
@@ -18,32 +18,32 @@ settingsTabUI <-
           box(title = "Eingabefelder Impfung",
               status = "primary",
               solidHeader = TRUE,
-              "Personalisiere angezeigten Eingabefelder",
-              checkboxInput(inputId = "checkUserVaccination",
-                            label = "Benutzer",
-                            value = TRUE)
+              "Personalisiere angezeigten Eingabefelder"
           ),
           #History
           box(title = "History Tabelle",
               status = "primary",
               solidHeader = TRUE,
-              "Waehle spalten der History Tabelle",
-              checkboxGroupInput(inputId = "checkHistoryTable",
-                                 label = "",
-                                 choices = subset(names(treatmentTable),
-                                                  !(names(treatmentTable) %in% 
-                                                    c("date",
-                                                      "type",
-                                                      "calf",
-                                                      "eartag",
-                                                      "diagnosis"))),
-                                 selected = subset(names(treatmentTable),
-                                                   !(names(treatmentTable) %in% 
-                                                       c("date",
-                                                         "type",
-                                                         "calf",
-                                                         "eartag",
-                                                         "diagnosis")))
-                                 )
-              )
+              tabBox(width = 12,
+              tabPanel(title = "Befunde/Behandlungen",
+                checkboxGroupInput(inputId = "checkHistoryTable",
+                                   label = "",
+                                   choices = subset(names(treatmentTable),
+                                                    !(names(treatmentTable) %in% 
+                                                        c("date",
+                                                          "type",
+                                                          "calf",
+                                                          "eartag",
+                                                          "diagnosis"))),
+                                   selected = subset(names(treatmentTable),
+                                                     !(names(treatmentTable) %in% 
+                                                         c("date",
+                                                           "type",
+                                                           "calf",
+                                                           "eartag",
+                                                           "diagnosis")))
+                )
+                ),
+              tabPanel(title = "Impfungen")
+              ))
   )

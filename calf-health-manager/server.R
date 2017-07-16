@@ -9,7 +9,7 @@ shinyServer(function(input, output, session) {
   source("www/Login.R", local = TRUE)
   
   
-  
+  # Get history table information for logged in User
   observeEvent(USER$Logged, {
     if(USER$Logged) {
       updateTabItems(session, "menuTabs", "dashboard")
@@ -41,9 +41,9 @@ shinyServer(function(input, output, session) {
   
   
   
-  #Calf List ----
-  
+  # Calf List Filter and filtered output ----
   observe({
+    # show all if UI is not rendered yet
     if (is.null(input$calfListFeedingDaysMin)) {
       rv$CalfListFilter <- list(feeder = data$calves$feeder,
                                 calves = data$calves$nr,
@@ -77,14 +77,11 @@ shinyServer(function(input, output, session) {
     }
     else {feedingDays <- input$calfListFeedingDaysMin:input$calfListFeedingDaysMax}
     
-    
-    
     rv$CalfListFilter <-    list(feeder = feeder,
                                  calves = calves,
                                  eartags = eartags,
                                  feedingDays = feedingDays
     )
-    
   })
   
   
@@ -104,7 +101,6 @@ shinyServer(function(input, output, session) {
   # History Tables -----
   
   ## Findings / Treatments
-  
   output$historyTable <- 
     renderDataTable({
       selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
@@ -129,10 +125,6 @@ shinyServer(function(input, output, session) {
       rv$vaccinationTable},
       options = list(scrollX = TRUE)
     )
-  
-  
-  
-  
   
   # Dashboard Link Boxes ---------------------------------------------------- 
   # Treatment Link Box
@@ -226,6 +218,13 @@ shinyServer(function(input, output, session) {
   
   
   # Other links ----
+  # HOME button
+  observeEvent(input$button_home, {
+    newtab <- "dashboard"
+    updateTabItems(session, "menuTabs", newtab)
+  })
+  
+  
   
   # Calf List links
   ## New Vaccination 
@@ -273,5 +272,5 @@ shinyServer(function(input, output, session) {
   
   
   # Debug -------------------------------------------------------------------
-  
+  observe(print(input$menuTabs))
 })

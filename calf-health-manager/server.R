@@ -41,6 +41,37 @@ shinyServer(function(input, output, session) {
   
   
   
+  # DropDown Menus----
+  observe(
+    if (USER$Logged) {
+      output$userDropdown <- renderMenu(
+        tags$li(class = "dropdown messages-menu",
+                a(href = "#", class = "dropdown-toggle", id = "dropdownUser", 
+                  `data-toggle` = "dropdown", icon("user-o")
+                ),
+               tags$style( "#dropdownUser {font-size:130%; padding-right: 10px}"),
+                tags$ul(class = "dropdown-menu",
+                        tags$li(class = "header", paste("Logged in as", USER$name)),
+                        tags$li(
+                          tags$ul(class = "menu",
+                                  tags$li(
+                                    tags$a(href="#dashboard", icon("sign-out"), class = "action-button", id = "button_logout",
+                                           h4(USER$name),
+                                           p("Logout"))))
+                        )
+                )
+        )
+      )
+      output$reminderDropdown <- renderMenu(
+        dropdownMenu(type = "notifications",
+                     badgeStatus = "warning",
+                     icon = icon("bell-o"),
+                     headerText = "Erinnerungen")
+      )
+    }
+  )
+  
+  
   # Calf List Filter and filtered output ----
   observe({
     # show all if UI is not rendered yet
@@ -271,6 +302,8 @@ shinyServer(function(input, output, session) {
   
   
   
+  
+
   # Debug -------------------------------------------------------------------
-  observe(print(input$menuTabs))
+  
 })

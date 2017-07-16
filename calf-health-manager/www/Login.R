@@ -85,23 +85,12 @@ output$bodyUI <- renderUI({
 })
 
 
-output$pass <- renderText({  
-  if (USER$Logged == FALSE) {
-    USER$pass
-  }  
-})
+# output$pass <- renderText({  
+#   if (USER$Logged == FALSE) {
+#     USER$pass
+#   }  
+# })
 
-# Login info during session ----
-output$userPanel <- renderUI({
-  if (USER$Logged == TRUE) {
-    fluidRow(
-      column(2,
-             "User: ", USER$name
-      ),
-      column(1, actionLink("logout", "Logout"))
-    )
-  }  
-})
 
 # control login
 observeEvent(input$Login , {
@@ -122,7 +111,9 @@ observeEvent(input$Login , {
 })
 
 # control logout
-observeEvent(input$logout , {
-  USER$Logged <- FALSE
-  USER$pass <- ""
+# Logout
+observeEvent(input$button_logout, {
+  USER$Logged = FALSE
+  print(paste("Debug: Logout User:", USER$name))
+  USER$name <- NULL
 })

@@ -36,6 +36,13 @@ shinyUI(
     title = "Calf Health Manager",
     dashboardHeader(title = tags$p("Calf Health Manager",
                                    style = "font-size:80%; font-weight:bold"),
+                    #Reminder Dropdown
+                    dropdownMenuOutput("reminderDropdown"),
+                    
+                    # User Information and Logout
+                    dropdownMenuOutput(outputId = "userDropdown"),
+                    
+                    # home button
                     tags$li(class = "dropdown",
                             shiny::actionButton(
                               inputId = "button_home",

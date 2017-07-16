@@ -23,7 +23,7 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "eartagTreatment", 
                          label = "Ohrmarken-Nr.",
-                         choices = c("", data$calves$eartag))
+                         choices = c("",as.character(data$calves$eartag )))
       ),
       column(4,
              conditionalPanel(

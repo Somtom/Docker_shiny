@@ -17,6 +17,8 @@ source("./ui_modules/treatmentTabUI.R")$value
 source("./ui_modules/vaccinationTabUI.R")$value
 source("./ui_modules/settingsTabUI.R")$value
 source("./ui_modules/historyTabUI.R")$value
+source("./ui_modules/groupTreatmentTabUI.R")$value
+
 
 
 # Source functions

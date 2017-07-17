@@ -40,9 +40,14 @@ treatmentTabUI <-
     br(),
     fluidRow(
       column(4,
-             selectInput(inputId = "findingsTreatment",
-                         label = "Befund",
-                         choices = c("",data$findings))
+             selectizeInput(inputId = "findingsTreatment",
+                              label = "Befund",
+                              multiple = TRUE,
+                              choices = c("",data$findings),
+                              options = list(create = TRUE,
+                                             plugins = list("remove_button"))
+                              )
+             
       ),
       column(4,
              numericInput(inputId = "temperatureTreatment", 
@@ -156,10 +161,6 @@ treatmentTabUI <-
       column(12, align = "right", 
              br(),
              br(),
-             actionButton(inputId = "button_backToDashboardTreatment",
-                          label = "Dashboard"),
-             tags$head(tags$style(
-               "#button_backToDashboardTreatment{background-color: #EFEFEF; border-color: #A3A3A3}")),
              actionButton(inputId = "button_ConfirmTreatment", label = "Fertig",
                           styleclass = "danger"),
              br()

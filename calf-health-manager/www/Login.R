@@ -21,6 +21,9 @@ output$sidebarUI <- renderUI({
       shinyjs::hidden(menuItem("Impfung",
                                tabName = "vaccination",
                                icon = icon("ambulance"))),
+      shinyjs::hidden(menuItem("Gruppenbehandlung",
+                                tabName = "groupTreatment",
+                                icon = icon("ambulance"))),
       menuItem("History",
                tabName = "history",
                icon = icon("book")),
@@ -74,6 +77,8 @@ output$bodyUI <- renderUI({
         treatmentTabUI,
         # Vaccination
         vaccinationTabUI,
+        # Group Treatment
+        groupTreatmentTabUI,
         # History
         historyTabUI,
         # Settings

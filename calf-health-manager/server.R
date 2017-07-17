@@ -174,10 +174,16 @@ shinyServer(function(input, output, session) {
     updateTabItems(session, "menuTabs", newtab)
   })
   
-  ## Back to Dashboard
-  observeEvent(input$button_backToDashboardCalfList, {
+  ## New GroupTreatment
+  observeEvent(input$button_newGroupTreatment, {
+    print("Button neue Gruppen Behandlung")
+    
+    #show dynamic UI
+    shinyjs::show(id = "dynamicGroupTreatmentUI")
+    shinyjs::hide(id = "selectCalvesInfoGroupTreatment")
+    
     newtab <- switch(input$menuTabs,
-                     "calfList" = "dashboard"
+                     "calfList" = "groupTreatment"
     )
     updateTabItems(session, "menuTabs", newtab)
   })
@@ -200,7 +206,14 @@ shinyServer(function(input, output, session) {
     updateTabItems(session, "menuTabs", newtab)
   })
   
-  
+  # Group Treatment links
+  ## Back to CalfList
+  observeEvent(input$button_backToCalfListGroupTreatment, {
+    newtab <- switch(input$menuTabs,
+                     "groupTreatment" = "calfList"
+    )
+    updateTabItems(session, "menuTabs", newtab)
+  })
   
   
   

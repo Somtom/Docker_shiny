@@ -55,14 +55,22 @@ tags$head(tags$style(HTML('
                           background:#1e282c;
                           border-left-color:#363636
                           }
-                          
+
+
                           /* Select to input Box width when no element selected /*
                           .select2-container-multi .select2-choices .select2-search-field{
-                          width : 80px;
+                          width : 300px;
+                          max-width: 100%
                           }
                           
                           .select2-container-multi .select2-choices .select2-search-field input{
-                          width : 80px;
+                          width : 300px;
+                          max-width: 100%
+                          }
+
+                          .shinysky-select2Input.shiny-bound-input{
+                          width: 300px;
+                          max-width: 100%
                           }
                           ')
                      )

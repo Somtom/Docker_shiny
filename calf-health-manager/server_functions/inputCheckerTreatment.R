@@ -5,7 +5,8 @@ inputCheckerTreatment <- function(input, output, session) {
       validate(
         need(input$calfTreatment != "", "Please choose a calf"),
         need(input$eartagTreatment != "", "Please choose an eartag number"),
-        need(input$findingsTreatment != "", "Please choose a finding"),
+        need(input$feederTreatment != "", "Please choose a feeder"),
+        need(paste(input$findingsTreatment, collapse = ",") != "", "Please choose a finding"),
         if (input$checkReminderTreatment == TRUE) {
           need(input$nextTreatment, "Please provide days until next treatment for reminder")
         },

@@ -1,6 +1,6 @@
 # CalfList Ui
 
-calfListTabUI <-
+calfListTabUI <- function(input, output, session, rv) {
   tabItem(tabName = "calfList", box(
     id = "boxCalfList",
     width = 12,
@@ -26,15 +26,15 @@ calfListTabUI <-
              selectInput(inputId = "calfListFeeder",
                          label = "Automat",
                          multiple = TRUE,
-                         choices = unique(data$calves$feeder)), 
+                         choices = unique(rv$data$calves$feeder)), 
              selectInput(inputId = "calfListCalves",
                          label = "Kalb",
                          multiple = TRUE,
-                         choices = data$calves$nr),
+                         choices = rv$data$calves$nr),
              selectInput(inputId = "calfListEartags",
                          label = "Ohrmarken-Nr",
                          multiple = TRUE,
-                         choices = data$calves$eartag),
+                         choices = rv$data$calves$eartag),
              numericInput(inputId = "calfListFeedingDaysMin",
                           label = "Ab Futtertag",
                           value = NA),
@@ -45,10 +45,11 @@ calfListTabUI <-
       column(9,
              fluidRow(
                column(12,
-               dataTableOutput("customCalfList")
+                      dataTableOutput("customCalfList")
                )
              )
       )
     )
   ),
   fluidRow())
+}

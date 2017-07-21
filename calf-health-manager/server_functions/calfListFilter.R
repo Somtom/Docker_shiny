@@ -1,11 +1,11 @@
-calfListFilter <- function(input, output, session, rv, data) {
+calfListFilter <- function(input, output, session, rv) {
   observe({
     # show all if UI is not rendered yet----
     if (is.null(input$calfListFeedingDaysMin)) {
-      rv$CalfListFilter <- list(feeder = data$calves$feeder,
-                                calves = data$calves$nr,
-                                eartags = data$calves$eartag,
-                                feedingDays = data$calves$feedingDay
+      rv$CalfListFilter <- list(feeder = rv$data$calves$feeder,
+                                calves = rv$data$calves$nr,
+                                eartags = rv$data$calves$eartag,
+                                feedingDays = rv$data$calves$feedingDay
       )
       return()
     }
@@ -16,10 +16,10 @@ calfListFilter <- function(input, output, session, rv, data) {
         & is.null(input$calfListEartags)
         & is.na(input$calfListFeedingDaysMin)
         & is.na(input$calfListFeedingDaysMax)) {
-      rv$CalfListFilter <- list(feeder = data$calves$feeder,
-                                calves = data$calves$nr,
-                                eartags = data$calves$eartag,
-                                feedingDays = data$calves$feedingDay
+      rv$CalfListFilter <- list(feeder = rv$data$calves$feeder,
+                                calves = rv$data$calves$nr,
+                                eartags = rv$data$calves$eartag,
+                                feedingDays = rv$data$calves$feedingDay
       )
       return()
     }
@@ -40,13 +40,13 @@ calfListFilter <- function(input, output, session, rv, data) {
 
     #feeding days
     if (is.na(input$calfListFeedingDaysMin) & is.na(input$calfListFeedingDaysMax)) {
-      feedingDays <- data$calves$feedingDay
+      feedingDays <- rv$data$calves$feedingDay
     }
     else if (is.na(input$calfListFeedingDaysMin)) {
       feedingDays <- 0:input$calfListFeedingDaysMax
     }
     else if (is.na(input$calfListFeedingDaysMax)) {
-      feedingDays <- input$calfListFeedingDaysMin:max(data$calves$feedingDay, na.rm = T)
+      feedingDays <- input$calfListFeedingDaysMin:max(rv$data$calves$feedingDay, na.rm = T)
     }
     else {feedingDays <- input$calfListFeedingDaysMin:input$calfListFeedingDaysMax}
     
@@ -55,19 +55,22 @@ calfListFilter <- function(input, output, session, rv, data) {
                                  eartags = eartags,
                                  feedingDays = feedingDays
     )
-    print(rv$CalfListFilter)
   })
   
-  output$customCalfList <- renderDataTable(
-    rv$customCalfList <- subset(data$calves,
+  output$customCalfList <- renderDataTable( {
+    customCalfList <- subset(rv$data$calves,
                                 (feeder %in% rv$CalfListFilter$feeder
                                 | nr %in% rv$CalfListFilter$calves
                                 | eartag %in% rv$CalfListFilter$eartags)
                                 & feedingDay %in% rv$CalfListFilter$feedingDays
                                 
-    ),
+    )[,-1]
+    rv$customCalfList <- customCalfList[with(customCalfList, order(feeder, nr)),]
+    },
+    
     options = list(pageLength = 50,
                    dom = "bottomp")
+
   )
   
 }

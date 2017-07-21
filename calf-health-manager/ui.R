@@ -5,25 +5,27 @@ require(shinyjs)
 require(openssl)
 require(data.table)
 require(R4CouchDB)
+require(V8)
 
-# Get predefined input data
+
+
+#input Data
 source("./data/inputData.R")
 
-
-
-# Source UI-elements
-source("./ui_modules/calfListTabUI.R")$value
-source("./ui_modules/treatmentTabUI.R")$value
-source("./ui_modules/vaccinationTabUI.R")$value
-source("./ui_modules/settingsTabUI.R")$value
-source("./ui_modules/historyTabUI.R")$value
-source("./ui_modules/groupTreatmentTabUI.R")$value
+# # Source UI-elements
+# source("./ui_modules/calfListTabUI.R")$value
+# source("./ui_modules/treatmentTabUI.R")$value
+# source("./ui_modules/vaccinationTabUI.R")$value
+# source("./ui_modules/settingsTabUI.R")$value
+# source("./ui_modules/historyTabUI.R")$value
+# source("./ui_modules/groupTreatmentTabUI.R")$value
 
 
 
 # Source functions
 source("./server_functions/addNewTreatment.R")
 source("./server_functions/addNewVaccination.R")
+source("./server_functions/addNewGroupTreatment.R")
 source("./server_functions/inputCheckerTreatment.R")
 source("./server_functions/inputCheckerVaccination.R")
 source("./server_functions/saveToCouchDB.R")
@@ -32,6 +34,7 @@ source("./server_functions/getHistoryData.R")
 source("./server_functions/calfListFilter.R")
 source("./server_functions/renderHistoryTables.R")
 source("./server_functions/matchSelectedAnimalInfo.R")
+source("./server_functions/verifyUser.R")
 
 
 # Defining the UI
@@ -50,7 +53,7 @@ shinyUI(
                     tags$li(class = "dropdown",
                             shiny::actionButton(
                               inputId = "button_home",
-                              label="",
+                              label = "",
                               icon = icon("home"),
                               style = "background-color: transparent;
                               color: white; border-color: transparent; padding:10px 15px"

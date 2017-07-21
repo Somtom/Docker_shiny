@@ -1,6 +1,6 @@
 # This script defines the Treatment Tab in the body of Calf Health Manager Dashboard
 
-groupTreatmentTabUI <- 
+groupTreatmentTabUI <- function(input, output, session, rv) {
   tabItem(tabName = "groupTreatment",
           shinyjs::hidden(div(id = "dynamicGroupTreatmentUI",box(id = "boxGroupTreatment",
               width = 12,
@@ -17,7 +17,7 @@ groupTreatmentTabUI <-
                 column(4,
                        selectInput(inputId = "purposeGroupTreatment",
                                    label = "Grund der Behandlung",
-                                   choices = c("",data$diseases))
+                                   choices = c("",rv$data$diseases))
                 ),
                 column(4,
                        textInput(inputId = "notesGroupTreatment", 
@@ -31,7 +31,7 @@ groupTreatmentTabUI <-
                 column(4,
                        selectInput(inputId = "drugGroupTreatment",
                                    label = "Medikament",
-                                   choices = data$drugs)
+                                   choices = c("",rv$data$drugs))
                 ),
                 column(4,
                        numericInput(inputId = "dosisGroupTreatment",
@@ -64,7 +64,7 @@ groupTreatmentTabUI <-
                          value = FALSE
                        ),
                        conditionalPanel(condition = "input.checkReminderGroupTreatment == true",
-                                        numericInput(inputId = "nextTreatment", 
+                                        numericInput(inputId = "nextGroupTreatment", 
                                                      label = "Naechste Beh.",
                                                      value = NA,
                                                      min = 1)
@@ -77,9 +77,9 @@ groupTreatmentTabUI <-
                          value = FALSE
                        ),
                        conditionalPanel(condition = "input.checkGiveElectrolytGroup == true",
-                                        selectInput(inputId = "electrolytRecipie",
+                                        selectInput(inputId = "electrolytRecipieGroup",
                                                     label = "Rezept",
-                                                    choices = data$recepiesElectrolyt))
+                                                    choices = rv$data$recepiesElectrolyt))
                 ),
                 column(4,
                        checkboxInput(
@@ -89,9 +89,9 @@ groupTreatmentTabUI <-
                        ),
                        conditionalPanel(
                          condition = "input.checkGiveMedicineGroup == true",
-                         selectInput(inputId = "medicineRecipie",
+                         selectInput(inputId = "medicineRecipieGroup",
                                      label = "Rezept",
-                                     choices = data$recepiesMedicine))
+                                     choices = rv$data$recepiesMedicine))
                 ) 
               ),
               fluidRow(
@@ -124,4 +124,4 @@ groupTreatmentTabUI <-
                 fluidRow(column(12, align = "center",h3("Bitte zuerst Tiere in Liste filtern")))
               ))),
               fluidRow())))
-          
+}

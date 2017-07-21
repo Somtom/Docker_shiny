@@ -4,7 +4,8 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     # Check if crutial provided
     if (input$calfTreatment == "") return(NULL)
     if (input$eartagTreatment == "") return(NULL)
-    if (input$findingsTreatment == "") return(NULL)
+    if (input$feederTreatment == "") return(NULL)
+    if (paste(input$findingsTreatment, collapse = ",") == "") return(NULL)
     if (input$checkReminderTreatment == TRUE) {
       if (is.na(input$nextTreatment)) return(NULL)
     }
@@ -16,7 +17,7 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     
     # Create data.frame with empty values
     newTreatment <-
-      data.frame(date = input$dateTreatment,
+      data.frame(date = as.character(input$dateTreatment),
                  type = "finding",
                  feeder = NA,
                  calf = NA,
@@ -31,16 +32,21 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
                  actions = NA,
                  observer = NA,
                  user = USER$name,
-                 notes = input$notesTreatment)
+                 notes = input$notesTreatment,
+                 feedingDay = NA)
     
     # Assign input values to newTreatment table
+    newTreatment$feeder <- input$feederTreatment
     newTreatment$calf <- input$calfTreatment
     newTreatment$eartag <- input$eartagTreatment
     newTreatment$observer <- input$observerTreatment
-    newTreatment$findings <- input$findingsTreatment
+    # convert vector to string if multiple findings
+    newTreatment$findings <- paste(input$findingsTreatment, collapse = ", ")
     newTreatment$diagnosis <- input$diagnosisTreatment
-    newTreatment$nextTreatment <- input$nextTreatment
     newTreatment$temperature <- input$temperatureTreatment
+    newTreatment$feedingDay <- subset(rv$data$calves,
+                                      feeder == input$feederTreatment &
+                                        nr == input$calfTreatment)$feedingDay
     if (input$choiceDrugtreatment == FALSE) {
       newTreatment$drug <- newTreatment$nextTreatment <- newTreatment$waitingTime <- newTreatment$AuANr <- NA
     }
@@ -48,6 +54,9 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
       newTreatment$drug <- input$drugTreatment
       newTreatment$waitingTime <- input$waitingTimeTreatment
       newTreatment$AuANr <- input$AuANrTreatment
+      newTreatment$type <- paste(newTreatment$type,", treatment")
+      newTreatment$nextTreatment <- as.character(
+        as.Date(Sys.time() + 86400*input$nextTreatment))
     }
     newTreatment$actions <- paste(ifelse(input$checkReminderTreatment, "Erinnerung", ""),
                                   ifelse(input$checkGiveElectrolyt, input$electrolytRecipie, ""),
@@ -56,14 +65,20 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     
     #write treatment into couchDB
     saveToCouchDB(newTreatment, serverName = couchIP)
-    
     # add treatment to old table
-    rv$treatmentTable <- rbind(rv$treatmentTable, newTreatment)
+    print(str(rv$treatmentTable))
+    print(str(rv$newTreatment))
+    rv$treatmentTable <- rbind.fill(rv$treatmentTable, newTreatment)
     print("Debug: New treatment saved")
     
     # set values to default for next Treatment
     shinyjs::reset("boxTreatment")
     print("Debug: Treatment values reset")
+    
+    newtab <- switch(input$menuTabs,
+                     "treatment" = "dashboard"
+    )
+    updateTabItems(session, "menuTabs", newtab)
     
     # user information
     showshinyalert(session, "alertConfirmTreatment", "Treatment successfully saved",

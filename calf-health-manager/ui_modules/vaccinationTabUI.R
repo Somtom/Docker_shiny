@@ -1,6 +1,6 @@
 # This script defines the Vaccination Tab in the body of Calf Health Manager Dashboard
 
-vaccinationTabUI <-
+vaccinationTabUI <- function(input, output, session, rv) {
   tabItem(tabName = "vaccination",
           shinyjs::hidden(div(id = "dynamicVaccinationUI",box(
             id = "boxVaccination",
@@ -18,7 +18,7 @@ vaccinationTabUI <-
               column(4,
                      selectInput(inputId = "vaccinationPurpose",
                                  label = "Zweck der Impfung",
-                                 choices = c("",data$vaccinationPurpose))
+                                 choices = c("",rv$data$vaccinationPurpose))
               ),
               column(4,
                      textInput(inputId = "notesVaccination",
@@ -29,7 +29,7 @@ vaccinationTabUI <-
               column(4,
                      selectInput(inputId = "vaccine",
                                  label = "Impfstoff",
-                                 choices = c("",data$vaccines))
+                                 choices = c("",rv$data$vaccines))
               ),
               column(4,
                      textInput(inputId = "batchNumberVaccination",
@@ -86,4 +86,4 @@ vaccinationTabUI <-
             fluidRow(column(12, align = "center",h3("Bitte zuerst Tiere in Liste filtern")))
           ))
   )
-
+}

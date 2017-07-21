@@ -1,15 +1,18 @@
 shinyServer(function(input, output, session) {
-  couchIP <- "172.18.0.23"
+  couchIP <- "10.38.2.127"
   
   # Custom reactive Values
   rv <- reactiveValues()
+
+  #input Data
+  initializeInputData(session, rv)
 
   # Login --------------
   USER <- reactiveValues(Logged = FALSE , session = session$user) 
   source("www/Login.R", local = TRUE)
   
   # Match Animal Information (Nr and Eartag) on Treatment Table
-  matchSelectedAnimalInfo(input, session, data)
+  matchSelectedAnimalInfo(input, session, rv$data)
   
   # Get history table information for logged in User----
   getHistoryData(input, session, rv, USER, couchIP)
@@ -19,6 +22,7 @@ shinyServer(function(input, output, session) {
   inputCheckerVaccination(input, output, session)
   addNewTreatment(input, output, session, rv, USER, couchIP)
   addNewVaccination(input, output, session, rv, USER, couchIP)
+  addNewGroupTreatment(input, output, session, rv, USER, couchIP)
   
   # DropDown Menus----
   observe(
@@ -34,7 +38,7 @@ shinyServer(function(input, output, session) {
                         tags$li(
                           tags$ul(class = "menu",
                                   tags$li(
-                                    tags$a(href="#dashboard", icon("sign-out"), class = "action-button", id = "button_logout",
+                                    tags$a(href = "#dashboard", icon("sign-out"), class = "action-button", id = "button_logout",
                                            h4(USER$name),
                                            p("Logout"))))
                         )
@@ -52,7 +56,7 @@ shinyServer(function(input, output, session) {
   
   
   # Calf List Filter and filtered output----
-  calfListFilter(input, output, session, rv, data)
+  calfListFilter(input, output, session, rv)
   
   # Render history tables -----
   renderHistoryTables(input, output, session, rv)

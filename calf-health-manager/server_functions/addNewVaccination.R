@@ -1,6 +1,7 @@
 addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
   observeEvent(input$button_ConfirmVaccination, {
     # Check if crutial provided
+
     if (input$vaccinationPurpose == "") return(NULL)
     if (input$vaccine == "") return(NULL)
     if (input$checkReminderVaccination == TRUE) {
@@ -13,18 +14,35 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     names(newVaccination) <- c("calf", "eartag", "feeder", "feedingDay")
     nCalves <- dim(newVaccination)[1]
     
-    newVaccination$date <- rep(input$dateVaccination, nCalves) 
-    newVaccination$type <- rep("vaccination", nCalves)
+    newVaccination <- 
+      data.frame(
+        newVaccination,
+        date = rep(as.character(input$dateVaccination), nCalves),
+        type = rep("vaccination", nCalves),
+        purpose = rep(NA, nCalves),
+        batchNr = rep(NA, nCalves),
+        veterinary = rep(NA, nCalves),
+        notesVaccination = rep(NA, nCalves),
+        actions = rep(NA, nCalves),
+        repeatVaccination = rep(NA, nCalves),
+        user = rep(NA, nCalves)
+      )
+    
+    # Assign input values to newVaccination table 
     newVaccination$purpose <- rep(input$vaccinationPurpose, nCalves)
     newVaccination$batchNr <- rep(input$batchNumberVaccination, nCalves)
     newVaccination$veterinary <- rep(input$vetVaccination, nCalves)
     newVaccination$notesVaccination <- rep(input$notesVaccination, nCalves)
-    newVaccination$actions <- rep(paste(ifelse(input$checkReminderTreatment,
+    newVaccination$user <- USER$name
+    newVaccination$actions <- rep(paste(ifelse(input$checkReminderVaccination,
                                                "Erinnerung",
                                                "")),
                                   nCalves)
-    newVaccination$user <- USER$name
-    
+    if (input$checkReminderVaccination) {
+      newVaccination$repeatVaccination <- as.character(
+        as.Date(Sys.time() + 86400*input$repeatVaccination))
+    }
+
     #write vaccination into couchDB
     saveToCouchDB(newVaccination, serverName = couchIP)
     
@@ -32,7 +50,7 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     rv$vaccinationTable <- rbind(rv$vaccinationTable, newVaccination)
     print("Debug: New Vaccination saved")
     
-    # set values to default for next Treatment
+    # set values to default for next Vaccination
     shinyjs::reset("boxVaccination")
     print("Debug: Vaccination values reset")
     

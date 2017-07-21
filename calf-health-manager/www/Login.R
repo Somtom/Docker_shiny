@@ -67,18 +67,20 @@ output$bodyUI <- renderUI({
                 ),
                 fluidRow(column(12, align = "center",
                                 div(shinyalert("alertConfirmVaccination", auto.close.after = 2),
+                                    style = "color:white; font-weight:bold"),
+                                div(shinyalert("alertConfirmTreatment", auto.close.after = 2),
                                     style = "color:white; font-weight:bold")
                                 )
                 )
         ),
         #CalfList
-        calfListTabUI,
+        calfListTabUI(input, output, session, rv),
         #Treatment
-        treatmentTabUI,
+        treatmentTabUI(input, output, session, rv),
         # Vaccination
-        vaccinationTabUI,
+        vaccinationTabUI(input, output, session, rv),
         # Group Treatment
-        groupTreatmentTabUI,
+        groupTreatmentTabUI(input, output, session, rv),
         # History
         historyTabUI,
         # Settings
@@ -90,25 +92,41 @@ output$bodyUI <- renderUI({
 })
 
 
-# output$pass <- renderText({  
-#   if (USER$Logged == FALSE) {
-#     USER$pass
-#   }  
-# })
-
-
 # control login
 observeEvent(input$Login , {
   Username <- isolate(input$userName)
   Password <- isolate(input$passwd)
-  pwdDB <- viewFromCouchDB(designDoc = "user", view = "passwd",
-                           serverName = couchIP,
-                           queryParam = paste0('key=\"',
-                                               Username,
-                                               '\"'))
-    if (sha2(Password) == pwdDB) {
+  verify <- verifyUser(Username, Password, serverName = couchIP)
+    if (verify) {
       USER$Logged <- TRUE
       USER$name <- Username
+      print(paste("User",USER$name, "logged in"))
+      
+      userCalves <- viewFromCouchDB(designDoc = "healthDoc",
+                                    view = "calfInfo",
+                                    serverName = couchIP,
+                                    DBName = "foerster-cc",
+                                    queryParam = paste0('key=\"',
+                                                        gsub("@", "%2540", USER$name),
+                                                        '\"'), 
+                                    handleID = "keep")
+      
+      
+      names(userCalves)[3] <- "nr"
+      userCalves$eartag <- rep("", length(userCalves$'X_id'))
+      rv$data$calves <- userCalves[with(userCalves, order(feeder, nr)),]
+      
+
+      
+      # Source UI-elements
+      source("./ui_modules/calfListTabUI.R")$value
+      source("./ui_modules/treatmentTabUI.R")$value
+      source("./ui_modules/vaccinationTabUI.R")$value
+      source("./ui_modules/settingsTabUI.R")$value
+      source("./ui_modules/historyTabUI.R")$value
+      source("./ui_modules/groupTreatmentTabUI.R")$value
+      
+
   } else {
     showshinyalert(session, "loginFailed", "Username or password failed",
                    styleclass = "blank")

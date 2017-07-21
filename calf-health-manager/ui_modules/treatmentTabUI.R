@@ -1,6 +1,6 @@
 # This script defines the Treatment Tab in the body of Calf Health Manager Dashboard
 
-treatmentTabUI <- 
+treatmentTabUI <- function(input, output, session, rv) {
   tabItem(tabName = "treatment", box(id = "boxTreatment",
     width = 12,
     title = "Befundsdokumentation",
@@ -12,27 +12,32 @@ treatmentTabUI <-
                        label = "Datum",
                        value = as.Date(Sys.time()),
                        max = as.Date(Sys.time()))
-      )
-    ),
-    fluidRow(
-      column(4,
-             selectInput(inputId = "calfTreatment", 
-                         label = "Kalbnummer",
-                         choices = c("", data$calves$nr))
-      ),
-      column(4,
-             selectInput(inputId = "eartagTreatment", 
-                         label = "Ohrmarken-Nr.",
-                         choices = c("",as.character(data$calves$eartag )))
-
-                             
       ),
       column(4,
              conditionalPanel(
                condition = "input.checkUserTreatment == true",
                textInput(inputId = "observerTreatment",
                          label = "Beobachter")
-               )
+             )
+      )
+    ),
+    fluidRow(
+      column(4,
+             selectInput(inputId = "feederTreatment", 
+                         label = "Automat",
+                         choices = rv$data$calves$feeder
+                         )
+      ),
+      column(4,
+             selectInput(inputId = "calfTreatment", 
+                         label = "Kalbnummer",
+                         choices = c("", rv$data$calves$nr))
+      ),
+      column(4,
+             selectInput(inputId = "eartagTreatment", 
+                         label = "Ohrmarken-Nr.",
+                         choices = c("",as.character(rv$data$calves$eartag )))
+                             
       )
     ),
     hr(),
@@ -43,7 +48,7 @@ treatmentTabUI <-
              selectizeInput(inputId = "findingsTreatment",
                               label = "Befund",
                               multiple = TRUE,
-                              choices = c("",data$findings),
+                              choices = c("",rv$data$findings),
                               options = list(create = TRUE,
                                              plugins = list("remove_button"))
                               )
@@ -57,7 +62,7 @@ treatmentTabUI <-
       column(4,
              selectInput(inputId = "diagnosisTreatment",
                          label = "Aerztliche Diagnose",
-                         choices = c("",data$diseases))
+                         choices = c("",rv$data$diseases))
       )
     ),
     fluidRow(
@@ -86,7 +91,7 @@ treatmentTabUI <-
         column(4,
                selectInput(inputId = "drugTreatment",
                            label = "Medikament",
-                           choices = data$drugs)
+                           choices = rv$data$drugs)
         ),
         column(4,
                numericInput(inputId = "dosisTreatment",
@@ -135,7 +140,7 @@ treatmentTabUI <-
              conditionalPanel(condition = "input.checkGiveElectrolyt == true",
                               selectInput(inputId = "electrolytRecipie",
                                           label = "Rezept",
-                                          choices = data$recepiesElectrolyt))
+                                          choices = rv$data$recepiesElectrolyt))
       ),
       column(4,
              checkboxInput(
@@ -147,7 +152,7 @@ treatmentTabUI <-
                condition = "input.checkGiveMedicine == true",
                selectInput(inputId = "medicineRecipie",
                            label = "Rezept",
-                           choices = data$recepiesMedicine))
+                           choices = rv$data$recepiesMedicine))
       ) 
     ),
     fluidRow(
@@ -168,4 +173,4 @@ treatmentTabUI <-
     )
   ),
   fluidRow())
-  
+}

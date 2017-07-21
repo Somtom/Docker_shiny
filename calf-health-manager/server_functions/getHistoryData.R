@@ -2,15 +2,17 @@
 
 getHistoryData <- function(input, session, rv, USER, couchIP) {
   observeEvent(USER$Logged, {
-    if(USER$Logged) {
+    if (USER$Logged) {
       updateTabItems(session, "menuTabs", "dashboard")
       rv$treatmentTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",
-                        view = "findings",
+                        view = "findings.treatments",
                         serverName = couchIP,
-                        queryParam = paste0('key=["finding", \"',
+                        queryParam = paste0('keys=[["finding", \"',
                                             USER$name,
-                                            '\"]'))
+                                            '\"],["treatment", \"',
+                                            USER$name,
+                                            '\"]]'))
       
       rv$vaccinationTable <- 
         viewFromCouchDB(designDoc  = "typeFilter",

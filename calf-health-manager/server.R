@@ -12,7 +12,7 @@ shinyServer(function(input, output, session) {
   source("www/Login.R", local = TRUE)
   
   # Match Animal Information (Nr and Eartag) on Treatment Table
-  matchSelectedAnimalInfo(input, session, rv$data)
+  matchSelectedAnimalInfo(input, session, rv)
   
   # Get history table information for logged in User----
   getHistoryData(input, session, rv, USER, couchIP)

@@ -28,14 +28,14 @@ matchSelectedAnimalInfo <- function(input, session, rv) {
     updateSelectInput(session, inputId = "eartagTreatment", selected = selectedEartagTreatment)
   })
   
-  # # Match CalfNr for selected eartag
-  # observeEvent(input$eartagTreatment,{
-  #   if (is.na(match(input$eartagTreatment, rv$data$calves$eartag))) {
-  #     selectedCalfTreatment <- ""
-  #   }
-  #   else {selectedCalfTreatment <- 
-  #     rv$data$calves$nr[match(input$eartagTreatment, rv$data$calves$eartag)]}
-  #   
-  #   updateSelectInput(session, inputId = "calfTreatment", selected = selectedCalfTreatment)
-  # })
+  # Match CalfNr for selected eartag
+  observeEvent(input$eartagTreatment,{
+    if (is.na(match(input$eartagTreatment, rv$data$calves$eartag))) {
+      selectedCalfTreatment <- ""
+    }
+    else {selectedCalfTreatment <-
+      rv$data$calves$nr[match(input$eartagTreatment, rv$data$calves$eartag)]}
+
+    updateSelectInput(session, inputId = "calfTreatment", selected = selectedCalfTreatment)
+  })
 }

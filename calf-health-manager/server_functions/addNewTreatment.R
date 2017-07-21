@@ -3,7 +3,7 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
   observeEvent(input$button_ConfirmTreatment, {
     # Check if crutial provided
     if (input$calfTreatment == "") return(NULL)
-    if (input$eartagTreatment == "") return(NULL)
+    #if (input$eartagTreatment == "") return(NULL)
     if (input$feederTreatment == "") return(NULL)
     if (paste(input$findingsTreatment, collapse = ",") == "") return(NULL)
     if (input$checkReminderTreatment == TRUE) {
@@ -66,9 +66,8 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     #write treatment into couchDB
     saveToCouchDB(newTreatment, serverName = couchIP)
     # add treatment to old table
-    print(str(rv$treatmentTable))
-    print(str(rv$newTreatment))
-    rv$treatmentTable <- rbind.fill(rv$treatmentTable, newTreatment)
+    if (is.null(rv$treatmentTable)) {rv$treatmentTable <- newTreatment} # if no treatments available
+    else {rv$treatmentTable <- rbind.fill(rv$treatmentTable, newTreatment)}
     print("Debug: New treatment saved")
     
     # set values to default for next Treatment

@@ -4,7 +4,7 @@ inputCheckerTreatment <- function(input, output, session) {
     output$inputCheckerTreatment <- renderText({
       validate(
         need(input$calfTreatment != "", "Please choose a calf"),
-        need(input$eartagTreatment != "", "Please choose an eartag number"),
+        #need(input$eartagTreatment != "", "Please choose an eartag number"),
         need(input$feederTreatment != "", "Please choose a feeder"),
         need(paste(input$findingsTreatment, collapse = ",") != "", "Please choose a finding"),
         if (input$checkReminderTreatment == TRUE) {

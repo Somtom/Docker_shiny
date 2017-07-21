@@ -13,3 +13,16 @@ CouchDB Views
    emit([doc.type,doc.user], doc);
  }
 }
+
+
+# Design Document "healthDoc" (in foerster-cc)
+## View "calfInfo"
+  function(doc) {
+    if(doc._id.indexOf('calfListItem:') != 0) return;
+    if(doc.disabled) { return; }
+  
+    var users = doc.users || [null];
+    users.forEach(function(user) {
+      emit(user, {'_id': doc._id, '_rev': doc._rev,'feeder': doc.feederLong, 'calfNumber' :doc.calfNumber, 'feedingDay': doc.feedingDay});
+    })
+  }

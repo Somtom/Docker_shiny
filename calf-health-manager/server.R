@@ -3,14 +3,22 @@ shinyServer(function(input, output, session) {
   
   # Custom reactive Values
   rv <- reactiveValues()
-
+  
   #input Data
   initializeInputData(session, rv)
+  
+  # Source UI-elements
+  source("./ui_modules/calfListTabUI.R")
+  source("./ui_modules/treatmentTabUI.R")
+  source("./ui_modules/vaccinationTabUI.R")
+  source("./ui_modules/settingsTabUI.R")
+  source("./ui_modules/historyTabUI.R")$value
+  source("./ui_modules/groupTreatmentTabUI.R")
 
   # Login --------------
   USER <- reactiveValues(Logged = FALSE , session = session$user) 
   source("www/Login.R", local = TRUE)
-  
+
   # Match Animal Information (Nr and Eartag) on Treatment Table
   matchSelectedAnimalInfo(input, session, rv)
   
@@ -53,8 +61,7 @@ shinyServer(function(input, output, session) {
       )
     }
   )
-  
-  
+
   # Calf List Filter and filtered output----
   calfListFilter(input, output, session, rv)
   
@@ -219,9 +226,7 @@ shinyServer(function(input, output, session) {
     updateTabItems(session, "menuTabs", newtab)
   })
   
-  
-  
 
   # Debug -------------------------------------------------------------------
-  
+
 })

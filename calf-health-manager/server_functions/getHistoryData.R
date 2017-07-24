@@ -4,7 +4,7 @@ getHistoryData <- function(input, session, rv, USER, couchIP) {
   observeEvent(USER$Logged, {
     if (USER$Logged) {
       updateTabItems(session, "menuTabs", "dashboard")
-      rv$treatmentTable <- 
+      res <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "findings.treatments",
                         serverName = couchIP,
@@ -13,14 +13,17 @@ getHistoryData <- function(input, session, rv, USER, couchIP) {
                                             '\"],["treatment", \"',
                                             USER$name,
                                             '\"]]'))
+      if (!is.vector(res)) {rv$treatmentTable <- res}
       
-      rv$vaccinationTable <- 
+      res <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "vaccinations",
                         serverName = couchIP,
                         queryParam = paste0('key=["vaccination", \"',
                                             USER$name,
                                             '\"]'))
+      
+      if (!is.vector(res)) {rv$vaccinationTable <- res}
     }
   })
 }

@@ -25,18 +25,20 @@ treatmentTabUI <- function(input, output, session, rv) {
       column(4,
              selectInput(inputId = "feederTreatment", 
                          label = "Automat",
-                         choices = rv$data$calves$feeder
+                         choices = c("",rv$data$calves$feeder)
                          )
       ),
       column(4,
-             selectInput(inputId = "calfTreatment", 
+             selectInput(inputId = "calfTreatment",
                          label = "Kalbnummer",
-                         choices = c("", rv$data$calves$nr))
+                         choices = c("",rv$data$calves$calf.feeder)
+                           )
       ),
       column(4,
              selectInput(inputId = "eartagTreatment", 
                          label = "Ohrmarken-Nr.",
-                         choices = c("",as.character(rv$data$calves$eartag )))
+                         choices = c("",rv$data$calves$eartag)
+                           )
                              
       )
     ),

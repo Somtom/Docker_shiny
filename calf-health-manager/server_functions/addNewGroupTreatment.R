@@ -9,7 +9,6 @@ addNewGroupTreatment <- function(input, output, session, rv, USER, couchIP) {
       if (is.na(input$nextGroupTreatment)) return(NULL)
     }
     
-    print(rv$customCalfList)
     shinyjs::disable("button_ConfirmGroupTreatment")
     
     # Create data.frame with empty values
@@ -64,6 +63,11 @@ addNewGroupTreatment <- function(input, output, session, rv, USER, couchIP) {
     # set values to default for next Treatment
     shinyjs::reset("boxGroupTreatment")
     print("Debug: GroupTreatment values reset")
+    
+    newtab <- switch(input$menuTabs,
+                     "groupTreatment" = "dashboard"
+    )
+    updateTabItems(session, "menuTabs", newtab)
     
     # user information
     showshinyalert(session, "alertConfirmGroupTreatment", "Treatment successfully saved",

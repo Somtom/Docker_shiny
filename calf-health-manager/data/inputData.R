@@ -20,7 +20,12 @@ initializeInputData <- function(session, rv) {
                                       eartag = paste0("DE03487700",
                                                       (62 + 1:30)),
                                       feeder = as.character(c(rep("test1",20), rep("test2",10))),
-                                      feedingDay = c(round(rnorm(30,15,5)))),
+                                      feedingDay = c(round(rnorm(30,15,5))),
+                                      calf.feeder = paste(
+                                        c(1:30),
+                                        "|",
+                                        as.character(c(rep("test1",20), rep("test2",10)))
+                                        )),
                   findings = c("high temperature", "high breathing frequency", "abnormal feces"),
                   diseases = c("", "disease 1", "disease 2", "disease 3"),
                   drugs = c("drug 1", "drug 2", "drug 3"),
@@ -30,7 +35,7 @@ initializeInputData <- function(session, rv) {
                   recepiesMedicine = c("Medicine 1", "Medicine 2"))
   
   
-  treatmentTable <- 
+  rv$treatmentTable <- 
     data.frame(
       calf = c(2,10,4),
       eartag = c("DE0348770063", "DE0348770072", "DE0348770068"),
@@ -51,7 +56,7 @@ initializeInputData <- function(session, rv) {
       notes = c(NA, "nur leichter Durchfall", NA)
     )
   
-  vaccinationTable <- 
+  rv$vaccinationTable <- 
     data.frame(
       calf = c(1,2,3),
       eartag = c("DE0348770063", "DE0348770072", "DE0348770068"),

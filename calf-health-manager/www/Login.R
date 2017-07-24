@@ -1,5 +1,37 @@
 #### Log in module ###
 
+# control login
+observeEvent(input$Login , {
+  Username <- isolate(input$userName)
+  Password <- isolate(input$passwd)
+  verify <- verifyUser(Username, Password, serverName = couchIP)
+  if (verify) {
+    USER$Logged <- TRUE
+    USER$name <- Username
+    print(paste("User",USER$name, "logged in"))
+    
+    userCalves <- viewFromCouchDB(designDoc = "healthDoc",
+                                  view = "calfInfo",
+                                  serverName = couchIP,
+                                  DBName = "foerster-cc",
+                                  queryParam = paste0('key=\"',
+                                                      gsub("@", "%2540", USER$name),
+                                                      '\"'), 
+                                  handleID = "keep")
+    if (!is.vector(userCalves)) {
+      names(userCalves)[3] <- "nr"
+      userCalves$eartag <- rep("", length(userCalves$'X_id'))
+      userCalves$calf.feeder <- c(paste(userCalves$nr, "|", userCalves$feeder))
+      rv$data$calves <- userCalves[with(userCalves, order(feeder, nr)),]
+      }
+    
+  } else {
+    showshinyalert(session, "loginFailed", "Username or password failed",
+                   styleclass = "blank")
+  }
+})
+
+
 # SidebarUI
 output$sidebarUI <- renderUI({
   if (USER$Logged == FALSE) {
@@ -69,6 +101,8 @@ output$bodyUI <- renderUI({
                                 div(shinyalert("alertConfirmVaccination", auto.close.after = 2),
                                     style = "color:white; font-weight:bold"),
                                 div(shinyalert("alertConfirmTreatment", auto.close.after = 2),
+                                    style = "color:white; font-weight:bold"),
+                                div(shinyalert("alertConfirmGroupTreatment", auto.close.after = 2),
                                     style = "color:white; font-weight:bold")
                                 )
                 )
@@ -84,54 +118,13 @@ output$bodyUI <- renderUI({
         # History
         historyTabUI,
         # Settings
-        settingsTabUI
+        settingsTabUI(input, output, session, rv)
       )
     )
 
   }
 })
 
-
-# control login
-observeEvent(input$Login , {
-  Username <- isolate(input$userName)
-  Password <- isolate(input$passwd)
-  verify <- verifyUser(Username, Password, serverName = couchIP)
-    if (verify) {
-      USER$Logged <- TRUE
-      USER$name <- Username
-      print(paste("User",USER$name, "logged in"))
-      
-      userCalves <- viewFromCouchDB(designDoc = "healthDoc",
-                                    view = "calfInfo",
-                                    serverName = couchIP,
-                                    DBName = "foerster-cc",
-                                    queryParam = paste0('key=\"',
-                                                        gsub("@", "%2540", USER$name),
-                                                        '\"'), 
-                                    handleID = "keep")
-      
-      
-      names(userCalves)[3] <- "nr"
-      userCalves$eartag <- rep("", length(userCalves$'X_id'))
-      rv$data$calves <- userCalves[with(userCalves, order(feeder, nr)),]
-      
-
-      
-      # Source UI-elements
-      source("./ui_modules/calfListTabUI.R")$value
-      source("./ui_modules/treatmentTabUI.R")$value
-      source("./ui_modules/vaccinationTabUI.R")$value
-      source("./ui_modules/settingsTabUI.R")$value
-      source("./ui_modules/historyTabUI.R")$value
-      source("./ui_modules/groupTreatmentTabUI.R")$value
-      
-
-  } else {
-    showshinyalert(session, "loginFailed", "Username or password failed",
-                   styleclass = "blank")
-  }
-})
 
 # control logout
 # Logout

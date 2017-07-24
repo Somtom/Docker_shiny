@@ -3,7 +3,7 @@ calfListFilter <- function(input, output, session, rv) {
     # show all if UI is not rendered yet----
     if (is.null(input$calfListFeedingDaysMin)) {
       rv$CalfListFilter <- list(feeder = rv$data$calves$feeder,
-                                calves = rv$data$calves$nr,
+                                calves = rv$data$calves$calf.feeder,
                                 eartags = rv$data$calves$eartag,
                                 feedingDays = rv$data$calves$feedingDay
       )
@@ -17,7 +17,7 @@ calfListFilter <- function(input, output, session, rv) {
         & is.na(input$calfListFeedingDaysMin)
         & is.na(input$calfListFeedingDaysMax)) {
       rv$CalfListFilter <- list(feeder = rv$data$calves$feeder,
-                                calves = rv$data$calves$nr,
+                                calves = rv$data$calves$calf.feeder,
                                 eartags = rv$data$calves$eartag,
                                 feedingDays = rv$data$calves$feedingDay
       )
@@ -27,15 +27,15 @@ calfListFilter <- function(input, output, session, rv) {
     # If at least one choice is made----
     
     #feeder
-    if (is.null(input$calfListFeeder)) {feeder = NA}
+    if (is.null(input$calfListFeeder)) {feeder =  rv$data$calves$feeder}
     else {feeder = input$calfListFeeder}
 
     #calves
-    if (is.null(input$calfListCalves)) {calves = NA}
+    if (is.null(input$calfListCalves)) {calves =  rv$data$calves$calf.feeder}
     else {calves = input$calfListCalves}
 
     #eartag
-    if (is.null(input$calfListEartags)) {eartags = NA}
+    if (is.null(input$calfListEartags)) {eartags = rv$data$calves$eartag}
     else {eartags = input$calfListEartags}
 
     #feeding days
@@ -60,12 +60,13 @@ calfListFilter <- function(input, output, session, rv) {
   output$customCalfList <- renderDataTable( {
     customCalfList <- subset(rv$data$calves,
                                 (feeder %in% rv$CalfListFilter$feeder
-                                | nr %in% rv$CalfListFilter$calves
-                                | eartag %in% rv$CalfListFilter$eartags)
+                                & calf.feeder %in% rv$CalfListFilter$calves
+                                & eartag %in% rv$CalfListFilter$eartags)
                                 & feedingDay %in% rv$CalfListFilter$feedingDays
                                 
-    )[,-1]
-    rv$customCalfList <- customCalfList[with(customCalfList, order(feeder, nr)),]
+    )
+    customCalfList <- customCalfList[with(customCalfList, order(feeder, nr)),]
+    rv$customCalfList <- customCalfList[,-which(names(customCalfList) %in% c("calf.feeder", "X_id"))]
     },
     
     options = list(pageLength = 50,

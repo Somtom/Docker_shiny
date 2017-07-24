@@ -1,6 +1,6 @@
 # This script defines the Settings Tab in the body of Calf Health Manager Dashboard
 
-settingsTabUI <- 
+settingsTabUI <- function(input, output, session, rv) {
   tabItem(tabName = "settings",
           # Treatment
           box(title = "Eingabefelder Befund",
@@ -28,15 +28,15 @@ settingsTabUI <-
               tabPanel(title = "Befunde/Behandlungen",
                 checkboxGroupInput(inputId = "checkHistoryTable",
                                    label = "",
-                                   choices = subset(names(treatmentTable),
-                                                    !(names(treatmentTable) %in% 
+                                   choices = subset(names(rv$treatmentTable),
+                                                    !(names(rv$treatmentTable) %in% 
                                                         c("date",
                                                           "type",
                                                           "calf",
                                                           "eartag",
                                                           "diagnosis"))),
-                                   selected = subset(names(treatmentTable),
-                                                     !(names(treatmentTable) %in% 
+                                   selected = subset(names(rv$treatmentTable),
+                                                     !(names(rv$treatmentTable) %in% 
                                                          c("date",
                                                            "type",
                                                            "calf",
@@ -47,3 +47,4 @@ settingsTabUI <-
               tabPanel(title = "Impfungen")
               ))
   )
+}

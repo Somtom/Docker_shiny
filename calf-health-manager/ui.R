@@ -1,3 +1,4 @@
+
 require(shiny)
 require(shinydashboard)
 require(shinysky)
@@ -11,15 +12,6 @@ require(V8)
 
 #input Data
 source("./data/inputData.R")
-
-# # Source UI-elements
-# source("./ui_modules/calfListTabUI.R")$value
-# source("./ui_modules/treatmentTabUI.R")$value
-# source("./ui_modules/vaccinationTabUI.R")$value
-# source("./ui_modules/settingsTabUI.R")$value
-# source("./ui_modules/historyTabUI.R")$value
-# source("./ui_modules/groupTreatmentTabUI.R")$value
-
 
 
 # Source functions

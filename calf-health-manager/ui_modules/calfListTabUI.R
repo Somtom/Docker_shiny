@@ -30,7 +30,7 @@ calfListTabUI <- function(input, output, session, rv) {
              selectInput(inputId = "calfListCalves",
                          label = "Kalb",
                          multiple = TRUE,
-                         choices = rv$data$calves$nr),
+                         choices = rv$data$calves$calf.feeder),
              selectInput(inputId = "calfListEartags",
                          label = "Ohrmarken-Nr",
                          multiple = TRUE,

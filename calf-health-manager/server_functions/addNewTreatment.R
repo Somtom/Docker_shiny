@@ -37,7 +37,7 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     
     # Assign input values to newTreatment table
     newTreatment$feeder <- input$feederTreatment
-    newTreatment$calf <- input$calfTreatment
+    newTreatment$calf <- unlist(strsplit(input$calfTreatment, " | "))[1]
     newTreatment$eartag <- input$eartagTreatment
     newTreatment$observer <- input$observerTreatment
     # convert vector to string if multiple findings
@@ -46,7 +46,8 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     newTreatment$temperature <- input$temperatureTreatment
     newTreatment$feedingDay <- subset(rv$data$calves,
                                       feeder == input$feederTreatment &
-                                        nr == input$calfTreatment)$feedingDay
+                                        nr == unlist(
+                                          strsplit(input$calfTreatment, " | "))[1])$feedingDay
     if (input$choiceDrugtreatment == FALSE) {
       newTreatment$drug <- newTreatment$nextTreatment <- newTreatment$waitingTime <- newTreatment$AuANr <- NA
     }

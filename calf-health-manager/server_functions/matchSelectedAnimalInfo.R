@@ -5,37 +5,37 @@ matchSelectedAnimalInfo <- function(input, session, rv) {
   # Match calves and eartags with feeder
   observeEvent(input$feederTreatment,{
     if (is.na(match(input$feederTreatment, rv$data$calves$feeder))) {
-      choicesEartag <- rv$data$calves$eartag
-      choicesCalf <- rv$data$calves$nr
+      choicesEartag <- c("", rv$data$calves$eartag)
+      choicesCalf <- c("", rv$data$calves$calf.feeder)
     }
     else {
-      choicesEartag <- subset(rv$data$calves, feeder == input$feederTreatment)$eartag
-      choicesCalf <- subset(rv$data$calves, feeder == input$feederTreatment)$nr
+      choicesEartag <- c("", subset(rv$data$calves, feeder == input$feederTreatment)$eartag)
+      choicesCalf <- c("", subset(rv$data$calves, feeder == input$feederTreatment)$calf.feeder)
       }
     
     updateSelectInput(session, inputId = "eartagTreatment", choices = choicesEartag)
-    updateSelectInput(session, inputId = "calfTreatment", choices =  choicesCalf)
+    updateSelectInput(session, inputId = "calfTreatment", choices =  choicesCalf, selected = "")
   })
   
   # Match eartag for selected CalfNr
   observeEvent(input$calfTreatment,{
-    if (is.na(match(input$calfTreatment, rv$data$calves$nr))) {
+    if (is.na(match(input$calfTreatment, rv$data$calves$calf.feeder))) {
       selectedEartagTreatment <- ""
     }
     else {selectedEartagTreatment <- 
-      rv$data$calves$eartag[match(input$calfTreatment, rv$data$calves$nr)]}
+      rv$data$calves$eartag[match(input$calfTreatment, rv$data$calves$calf.feeder)]}
     
     updateSelectInput(session, inputId = "eartagTreatment", selected = selectedEartagTreatment)
   })
   
   # Match CalfNr for selected eartag
   observeEvent(input$eartagTreatment,{
-    if (is.na(match(input$eartagTreatment, rv$data$calves$eartag))) {
+    if (is.na(match(input$eartagTreatment, rv$data$calves$eartag)) | input$eartagTreatment == "") {
       selectedCalfTreatment <- ""
     }
     else {selectedCalfTreatment <-
-      rv$data$calves$nr[match(input$eartagTreatment, rv$data$calves$eartag)]}
+      rv$data$calves$calf.feeder[match(input$eartagTreatment, rv$data$calves$eartag)]}
 
     updateSelectInput(session, inputId = "calfTreatment", selected = selectedCalfTreatment)
   })
-}
+  }

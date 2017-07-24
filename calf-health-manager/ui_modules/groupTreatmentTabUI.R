@@ -97,8 +97,7 @@ groupTreatmentTabUI <- function(input, output, session, rv) {
               fluidRow(
                 column(12, 
                        span(textOutput("inputCheckerGroupTreatment"), style = "color:#ff3300"),
-                       tags$head(tags$style("#inputCheckerGroupTreatment{color: red;}")),
-                       shinyalert("alertConfirmGroupTreatment", auto.close.after = 2)
+                       tags$head(tags$style("#inputCheckerGroupTreatment{color: red;}"))
                 )
               ),
               fluidRow(

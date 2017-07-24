@@ -47,7 +47,7 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     saveToCouchDB(newVaccination, serverName = couchIP)
     
     # add vaccination to old table
-    rv$vaccinationTable <- rbind(rv$vaccinationTable, newVaccination)
+    rv$vaccinationTable <- rbind.fill(rv$vaccinationTable, newVaccination)
     print("Debug: New Vaccination saved")
     
     # set values to default for next Vaccination

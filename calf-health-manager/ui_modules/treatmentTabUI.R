@@ -31,7 +31,8 @@ treatmentTabUI <- function(input, output, session, rv) {
       column(4,
              selectInput(inputId = "calfTreatment",
                          label = "Kalbnummer",
-                         choices = c("",rv$data$calves$calf.feeder)
+                         choices = c("",setNames(rv$data$calves$calfID,
+                                            rv$data$calves$calf.feeder))
                            )
       ),
       column(4,
@@ -160,8 +161,7 @@ treatmentTabUI <- function(input, output, session, rv) {
     fluidRow(
       column(12, 
              span(textOutput("inputCheckerTreatment"), style = "color:#ff3300"),
-             tags$head(tags$style("#inputCheckerTreatment{color: red;}")),
-             shinyalert("alertConfirmTreatment", auto.close.after = 2)
+             tags$head(tags$style("#inputCheckerTreatment{color: red;}"))
       )
     ),
     fluidRow(

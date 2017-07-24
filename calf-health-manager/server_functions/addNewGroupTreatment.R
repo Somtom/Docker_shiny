@@ -2,7 +2,7 @@ addNewGroupTreatment <- function(input, output, session, rv, USER, couchIP) {
   
   observeEvent(input$button_ConfirmGroupTreatment, {
     # Check if crutial provided
-    #if (input$purposeGroupTreatment == "") return(NULL)
+    if (input$purposeGroupTreatment == "") return(NULL)
     if (input$drugGroupTreatment == "") return(NULL)
     if (is.na(input$dosisGroupTreatment)) return(NULL)
     if (input$checkReminderGroupTreatment == TRUE) {
@@ -13,30 +13,28 @@ addNewGroupTreatment <- function(input, output, session, rv, USER, couchIP) {
     
     # Create data.frame with empty values
     newTreatment <- rv$customCalfList
-    names(newTreatment) <- c("calf", "eartag", "feeder", "feedingDay")
     nCalves <- dim(newTreatment)[1]
-    
-    newTreatment <-
-      data.frame(
-        newTreatment,
-        date = rep(as.character(input$dateTreatment), nCalves),
-        type = rep("treatment", nCalves),
-        findings = rep(NA, nCalves),
-        diagnosis  = rep(NA, nCalves),
-        temperature = rep(NA, nCalves),
-        drug = rep(NA, nCalves),
-        nextTreatment = rep(NA, nCalves),
-        waitingTime = rep(NA, nCalves),
-        AuANr = rep(NA, nCalves),
-        actions = rep(NA, nCalves),
-        observer = rep(NA, nCalves),
-        user = USER$name,
-        notes = rep(NA, nCalves)
+    names(newTreatment)[names(newTreatment) == 'nr'] <- 'calf'
+
+    newTreatment <- 
+      data.frame(newTreatment,
+                   date = rep(as.character(input$dateTreatment), nCalves),
+                   type = rep("treatment", nCalves),
+                   findings = rep(NA, nCalves),
+                   diagnosis  = rep(NA, nCalves),
+                   temperature = rep(NA, nCalves),
+                   drug = rep(NA, nCalves),
+                   nextTreatment = rep(NA, nCalves),
+                   waitingTime = rep(NA, nCalves),
+                   AuANr = rep(NA, nCalves),
+                   actions = rep(NA, nCalves),
+                   observer = rep(NA, nCalves),
+                   user = USER$name,
+                   notes = rep(NA, nCalves)
       )
     
     # Assign input values to newTreatment table
-    newTreatment$diagnosis <- rep(input$diagnosisGroupTreatment, nCalves)
-    #newTreatment$purpose <- rep(input$purposeGroupTreatment, nCalves)
+    newTreatment$diagnosis <- rep(input$purposeGroupTreatment, nCalves)
     newTreatment$notes <- rep(input$notesGroupTreatment, nCalves)
     newTreatment$drug <- rep(input$drugGroupTreatment, nCalves)
     newTreatment$waitingTime <- rep(input$waitingTimeGroupTreatment, nCalves)
@@ -57,7 +55,9 @@ addNewGroupTreatment <- function(input, output, session, rv, USER, couchIP) {
     #write treatment into couchDB
     saveToCouchDB(newTreatment, serverName = couchIP)
     # add treatment to old table
-    rv$treatmentTable <- rbind.fill(rv$treatmentTable, newTreatment)
+    rv$treatmentTable <- rbind.fill(rv$treatmentTable,
+                                    newTreatment[,-which(names(newTreatment) %in%
+                                                           c("calfID","calf.feeder", "X_id"))])
     print("Debug: New group treatment saved")
     
     # set values to default for next Treatment
@@ -70,7 +70,7 @@ addNewGroupTreatment <- function(input, output, session, rv, USER, couchIP) {
     updateTabItems(session, "menuTabs", newtab)
     
     # user information
-    showshinyalert(session, "alertConfirmGroupTreatment", "Treatment successfully saved",
+    showshinyalert(session, "alertConfirm", "Treatment successfully saved",
                    styleclass = "blank")
     
     shinyjs::enable("button_ConfirmGroupTreatment")

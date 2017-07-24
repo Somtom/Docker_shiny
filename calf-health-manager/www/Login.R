@@ -22,6 +22,7 @@ observeEvent(input$Login , {
       names(userCalves)[3] <- "nr"
       userCalves$eartag <- rep("", length(userCalves$'X_id'))
       userCalves$calf.feeder <- c(paste(userCalves$nr, "|", userCalves$feeder))
+      userCalves$calfID <- unname(sapply(userCalves$'X_id', function(x) unlist(strsplit(x,":"))[2]))
       rv$data$calves <- userCalves[with(userCalves, order(feeder, nr)),]
       }
     
@@ -98,11 +99,7 @@ output$bodyUI <- renderUI({
                   valueBoxOutput("goToSettings", width = 6)
                 ),
                 fluidRow(column(12, align = "center",
-                                div(shinyalert("alertConfirmVaccination", auto.close.after = 2),
-                                    style = "color:white; font-weight:bold"),
-                                div(shinyalert("alertConfirmTreatment", auto.close.after = 2),
-                                    style = "color:white; font-weight:bold"),
-                                div(shinyalert("alertConfirmGroupTreatment", auto.close.after = 2),
+                                div(shinyalert("alertConfirm", auto.close.after = 2),
                                     style = "color:white; font-weight:bold")
                                 )
                 )

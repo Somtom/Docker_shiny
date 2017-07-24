@@ -11,7 +11,7 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     
     # Create data.frame with empty values
     newVaccination <- rv$customCalfList
-    names(newVaccination) <- c("calf", "eartag", "feeder", "feedingDay")
+    names(newVaccination)[names(newVaccination) == 'nr'] <- 'calf'
     nCalves <- dim(newVaccination)[1]
     
     newVaccination <- 
@@ -47,7 +47,11 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     saveToCouchDB(newVaccination, serverName = couchIP)
     
     # add vaccination to old table
-    rv$vaccinationTable <- rbind.fill(rv$vaccinationTable, newVaccination)
+    rv$vaccinationTable <- 
+      rbind.fill(rv$vaccinationTable,
+                 newVaccination[,-which(names(newVaccination) %in%
+                                        c("calfID","calf.feeder", "X_id"))])
+    
     print("Debug: New Vaccination saved")
     
     # set values to default for next Vaccination
@@ -66,7 +70,7 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     updateTabItems(session, "menuTabs", newtab)
     
     # user information
-    showshinyalert(session, "alertConfirmVaccination", "Vaccination successfully saved",
+    showshinyalert(session, "alertConfirm", "Vaccination successfully saved",
                    styleclass = "blank")
     
     shinyjs::enable("button_ConfirmVaccination")

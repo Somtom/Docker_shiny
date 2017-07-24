@@ -6,7 +6,6 @@ shinyServer(function(input, output, session) {
   
   #input Data
   initializeInputData(session, rv)
-  
   # Source UI-elements
   source("./ui_modules/calfListTabUI.R")
   source("./ui_modules/treatmentTabUI.R")

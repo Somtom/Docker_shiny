@@ -33,11 +33,13 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
                  observer = NA,
                  user = USER$name,
                  notes = input$notesTreatment,
-                 feedingDay = NA)
+                 feedingDay = NA,
+                 calfID = NA)
     
     # Assign input values to newTreatment table
     newTreatment$feeder <- input$feederTreatment
-    newTreatment$calf <- unlist(strsplit(input$calfTreatment, " | "))[1]
+    newTreatment$calf <- rv$data$calves$nr[with(rv$data$calves,match(input$calfTreatment, calfID))]
+    newTreatment$calfID <- input$calfTreatment
     newTreatment$eartag <- input$eartagTreatment
     newTreatment$observer <- input$observerTreatment
     # convert vector to string if multiple findings
@@ -45,9 +47,7 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     newTreatment$diagnosis <- input$diagnosisTreatment
     newTreatment$temperature <- input$temperatureTreatment
     newTreatment$feedingDay <- subset(rv$data$calves,
-                                      feeder == input$feederTreatment &
-                                        nr == unlist(
-                                          strsplit(input$calfTreatment, " | "))[1])$feedingDay
+                                      calfID == input$calfTreatment)$feedingDay
     if (input$choiceDrugtreatment == FALSE) {
       newTreatment$drug <- newTreatment$nextTreatment <- newTreatment$waitingTime <- newTreatment$AuANr <- NA
     }
@@ -81,7 +81,7 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     updateTabItems(session, "menuTabs", newtab)
     
     # user information
-    showshinyalert(session, "alertConfirmTreatment", "Treatment successfully saved",
+    showshinyalert(session, "alertConfirm", "Treatment successfully saved",
                    styleclass = "blank")
     
     shinyjs::enable("button_ConfirmTreatment")

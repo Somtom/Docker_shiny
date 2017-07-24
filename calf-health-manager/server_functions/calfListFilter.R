@@ -3,7 +3,7 @@ calfListFilter <- function(input, output, session, rv) {
     # show all if UI is not rendered yet----
     if (is.null(input$calfListFeedingDaysMin)) {
       rv$CalfListFilter <- list(feeder = rv$data$calves$feeder,
-                                calves = rv$data$calves$calf.feeder,
+                                calves = rv$data$calves$calfID,
                                 eartags = rv$data$calves$eartag,
                                 feedingDays = rv$data$calves$feedingDay
       )
@@ -17,7 +17,7 @@ calfListFilter <- function(input, output, session, rv) {
         & is.na(input$calfListFeedingDaysMin)
         & is.na(input$calfListFeedingDaysMax)) {
       rv$CalfListFilter <- list(feeder = rv$data$calves$feeder,
-                                calves = rv$data$calves$calf.feeder,
+                                calves = rv$data$calves$calfID,
                                 eartags = rv$data$calves$eartag,
                                 feedingDays = rv$data$calves$feedingDay
       )
@@ -31,7 +31,7 @@ calfListFilter <- function(input, output, session, rv) {
     else {feeder = input$calfListFeeder}
 
     #calves
-    if (is.null(input$calfListCalves)) {calves =  rv$data$calves$calf.feeder}
+    if (is.null(input$calfListCalves)) {calves =  rv$data$calves$calfID}
     else {calves = input$calfListCalves}
 
     #eartag
@@ -60,14 +60,16 @@ calfListFilter <- function(input, output, session, rv) {
   output$customCalfList <- renderDataTable( {
     customCalfList <- subset(rv$data$calves,
                                 (feeder %in% rv$CalfListFilter$feeder
-                                & calf.feeder %in% rv$CalfListFilter$calves
+                                & calfID %in% rv$CalfListFilter$calves
                                 & eartag %in% rv$CalfListFilter$eartags)
                                 & feedingDay %in% rv$CalfListFilter$feedingDays
                                 
     )
-    customCalfList <- customCalfList[with(customCalfList, order(feeder, nr)),]
-    rv$customCalfList <- customCalfList[,-which(names(customCalfList) %in% c("calf.feeder", "X_id"))]
+    rv$customCalfList <- customCalfList[with(customCalfList, order(feeder, nr)),]
+    
+    customCalfList[,-which(names(customCalfList) %in% c("calfID","calf.feeder", "X_id"))]
     },
+    
     
     options = list(pageLength = 50,
                    dom = "bottomp")

@@ -80,6 +80,7 @@ output$bodyUI <- renderUI({
              passwordInput("passwd", "Password:"),
              br(),
              actionButton("Login", "Log in")),
+           shinysky::busyIndicator(text = "loggin in and loading data...", wait = 0),
            fluidRow(div(shinyalert("loginFailed", auto.close.after = 1),
                                     style = "color:red"))
              )

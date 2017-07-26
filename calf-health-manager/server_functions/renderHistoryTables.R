@@ -4,7 +4,7 @@ renderHistoryTables <- function(input, output, session, rv) {
     renderDataTable({
       table <- rv$treatmentTable[with(rv$treatmentTable, order(date, decreasing = T)),]
       table <- table[,-which(names(table) %in%
-                               c("calfID","calf.feeder", "X_id"))]
+                               c("calfID","calf.feeder", "X_id", "users"))]
       selectedColumns <- names(table) %in% c(input$checkHistoryTable,
                                                          "date", "type", "calf", "eartag", "diagnosis")
       table[selectedColumns]},
@@ -25,7 +25,9 @@ renderHistoryTables <- function(input, output, session, rv) {
       #                                                    "date", "type", "calf", "eartag", "diagnosis")
       # rv$treatmentTable[selectedColumns]},
       table <- rv$vaccinationTable[with(rv$vaccinationTable, order(date, decreasing = T)),]
-      rv$vaccinationTable},
+      table <- table[,-which(names(table) %in%
+                               c("calfID","calf.feeder", "X_id", "users"))]
+      table},
       options = list(scrollX = TRUE)
     )
 }

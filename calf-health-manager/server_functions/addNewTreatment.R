@@ -32,6 +32,7 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
                  actions = NA,
                  observer = NA,
                  user = USER$name,
+                 users = NA,
                  notes = input$notesTreatment,
                  feedingDay = NA,
                  calfID = NA)
@@ -40,6 +41,9 @@ addNewTreatment <- function(input, output, session, rv, USER, couchIP) {
     newTreatment$feeder <- input$feederTreatment
     newTreatment$calf <- rv$data$calves$nr[with(rv$data$calves,match(input$calfTreatment, calfID))]
     newTreatment$calfID <- input$calfTreatment
+    ####
+    newTreatment$users <- I(subset(rv$data$calves, calfID == input$calfTreatment)$users)
+    ####
     newTreatment$eartag <- input$eartagTreatment
     newTreatment$observer <- input$observerTreatment
     # convert vector to string if multiple findings

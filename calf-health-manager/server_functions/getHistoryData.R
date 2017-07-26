@@ -8,20 +8,24 @@ getHistoryData <- function(input, session, rv, USER, couchIP) {
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "findings.treatments",
                         serverName = couchIP,
-                        queryParam = paste0('keys=[["finding", \"',
-                                            USER$name,
-                                            '\"],["treatment", \"',
-                                            USER$name,
-                                            '\"]]'))
+                        queryParam = gsub('\"','%22',
+                                          gsub("@", "%2540",
+                                               paste0('keys=[["finding",\"',
+                                                      gsub("@", "%2540",USER$name),
+                                                      '\"],["treatment",\"',
+                                                      gsub("@", "%2540",USER$name),
+                                                      '\"]]'))))
       if (!is.vector(res)) {rv$treatmentTable <- res}
       
       res <- 
         viewFromCouchDB(designDoc  = "typeFilter",
                         view = "vaccinations",
                         serverName = couchIP,
-                        queryParam = paste0('key=["vaccination", \"',
+                        queryParam = gsub('\"', '%22',
+                                          gsub("@", "%2540",
+                                               paste0('key=["vaccination",\"',
                                             USER$name,
-                                            '\"]'))
+                                            '\"]'))))
       
       if (!is.vector(res)) {rv$vaccinationTable <- res}
     }

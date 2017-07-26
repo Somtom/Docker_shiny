@@ -67,7 +67,7 @@ calfListFilter <- function(input, output, session, rv) {
     )
     rv$customCalfList <- customCalfList[with(customCalfList, order(feeder, nr)),]
     
-    customCalfList[,-which(names(customCalfList) %in% c("calfID","calf.feeder", "X_id"))]
+    customCalfList[,-which(names(customCalfList) %in% c("calfID","calf.feeder", "X_id", "users"))]
     },
     
     

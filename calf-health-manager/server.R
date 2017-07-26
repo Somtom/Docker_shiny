@@ -1,6 +1,6 @@
 shinyServer(function(input, output, session) {
-  #couchIP <- "10.38.2.127"
-  couchIP <- "172.18.0.23/16"
+  # couchIP <- "10.38.2.127"
+  couchIP <- "172.18.0.23"
   # Custom reactive Values
   rv <- reactiveValues()
   

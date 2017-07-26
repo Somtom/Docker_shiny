@@ -63,9 +63,14 @@ treatmentTabUI <- function(input, output, session, rv) {
                           value = "")
       ),
       column(4,
-             selectInput(inputId = "diagnosisTreatment",
-                         label = "Aerztliche Diagnose",
-                         choices = c("",rv$data$diseases))
+             # selectInput(inputId = "diagnosisTreatment",
+             #             label = "Aerztliche Diagnose",
+             #             choices = c("",rv$data$diseases))
+             selectizeInput(inputId = "diagnosisTreatment",
+                            label = "Aerztliche Diagnose",
+                            multiple = TRUE,
+                            choices = c("",rv$data$diseases),
+                            options = list(create = TRUE))
       )
     ),
     fluidRow(
@@ -92,9 +97,15 @@ treatmentTabUI <- function(input, output, session, rv) {
       br(),
       fluidRow(
         column(4,
-               selectInput(inputId = "drugTreatment",
-                           label = "Medikament",
-                           choices = rv$data$drugs)
+               # selectInput(inputId = "drugTreatment",
+               #             label = "Medikament",
+               #             choices = rv$data$drugs)
+               selectizeInput(inputId = "drugTreatment",
+                              label = "Medikament",
+                              multiple = FALSE,
+                              choices = c("",rv$data$drugs),
+                              options = list(create = TRUE,
+                                             plugins = list("remove_button")))
         ),
         column(4,
                numericInput(inputId = "dosisTreatment",
@@ -174,5 +185,5 @@ treatmentTabUI <- function(input, output, session, rv) {
       )
     )
   ),
-  fluidRow())
+  fluidRow(shinysky::busyIndicator("saving Treatment")))
 }

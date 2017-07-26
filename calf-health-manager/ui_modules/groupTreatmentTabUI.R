@@ -15,9 +15,15 @@ groupTreatmentTabUI <- function(input, output, session, rv) {
                                  max = as.Date(Sys.time()))
                 ),
                 column(4,
-                       selectInput(inputId = "purposeGroupTreatment",
-                                   label = "Grund der Behandlung",
-                                   choices = c("",rv$data$diseases))
+                       # selectInput(inputId = "purposeGroupTreatment",
+                       #             label = "Grund der Behandlung",
+                       #             choices = c("",rv$data$diseases))
+                       selectizeInput(inputId = "purposeGroupTreatment",
+                                      label = "Grund der Behandlung",
+                                      multiple = FALSE,
+                                      choices = c("",rv$data$diseases),
+                                      options = list(create = TRUE,
+                                                     plugins = list("remove_button")))
                 ),
                 column(4,
                        textInput(inputId = "notesGroupTreatment", 
@@ -29,9 +35,15 @@ groupTreatmentTabUI <- function(input, output, session, rv) {
               br(),
               fluidRow(
                 column(4,
-                       selectInput(inputId = "drugGroupTreatment",
-                                   label = "Medikament",
-                                   choices = c("",rv$data$drugs))
+                       # selectInput(inputId = "drugGroupTreatment",
+                       #             label = "Medikament",
+                       #             choices = c("",rv$data$drugs))
+                       selectizeInput(inputId = "drugGroupTreatment",
+                                      label = "Medikament",
+                                      multiple = FALSE,
+                                      choices = c("",rv$data$drugs),
+                                      options = list(create = TRUE,
+                                                     plugins = list("remove_button")))
                 ),
                 column(4,
                        numericInput(inputId = "dosisGroupTreatment",
@@ -122,5 +134,5 @@ groupTreatmentTabUI <- function(input, output, session, rv) {
                 solidHeader = TRUE,
                 fluidRow(column(12, align = "center",h3("Bitte zuerst Tiere in Liste filtern")))
               ))),
-              fluidRow())))
+              fluidRow(shinysky::busyIndicator("saving Treatments")))))
 }

@@ -13,13 +13,13 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     newVaccination <- rv$customCalfList
     names(newVaccination)[names(newVaccination) == 'nr'] <- 'calf'
     nCalves <- dim(newVaccination)[1]
-    
     newVaccination <- 
       data.frame(
         newVaccination,
         date = rep(as.character(input$dateVaccination), nCalves),
         type = rep("vaccination", nCalves),
         purpose = rep(NA, nCalves),
+        vaccine = rep(NA, nCalves),
         batchNr = rep(NA, nCalves),
         veterinary = rep(NA, nCalves),
         notesVaccination = rep(NA, nCalves),
@@ -30,6 +30,7 @@ addNewVaccination <- function(input, output, session, rv, USER, couchIP) {
     
     # Assign input values to newVaccination table 
     newVaccination$purpose <- rep(input$vaccinationPurpose, nCalves)
+    newVaccination$vaccine <- rep(input$vaccine, nCalves)
     newVaccination$batchNr <- rep(input$batchNumberVaccination, nCalves)
     newVaccination$veterinary <- rep(input$vetVaccination, nCalves)
     newVaccination$notesVaccination <- rep(input$notesVaccination, nCalves)

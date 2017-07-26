@@ -16,9 +16,15 @@ vaccinationTabUI <- function(input, output, session, rv) {
                                max = as.Date(Sys.time()))
               ),
               column(4,
-                     selectInput(inputId = "vaccinationPurpose",
-                                 label = "Zweck der Impfung",
-                                 choices = c("",rv$data$vaccinationPurpose))
+                     # selectInput(inputId = "vaccinationPurpose",
+                     #             label = "Zweck der Impfung",
+                     #             choices = c("",rv$data$vaccinationPurpose))
+                     selectizeInput(inputId = "vaccinationPurpose",
+                                    label = "Zweck der Impfung",
+                                    multiple = FALSE,
+                                    choices = c("",rv$data$diseases),
+                                    options = list(create = TRUE,
+                                                   plugins = list("remove_button")))
               ),
               column(4,
                      textInput(inputId = "notesVaccination",
@@ -27,9 +33,15 @@ vaccinationTabUI <- function(input, output, session, rv) {
             ),
             fluidRow(
               column(4,
-                     selectInput(inputId = "vaccine",
-                                 label = "Impfstoff",
-                                 choices = c("",rv$data$vaccines))
+                     # selectInput(inputId = "vaccine",
+                     #             label = "Impfstoff",
+                     #             choices = c("",rv$data$vaccines))
+                     selectizeInput(inputId = "vaccine",
+                                    label = "Impfstoff",
+                                    multiple = FALSE,
+                                    choices = c("",rv$data$vaccines),
+                                    options = list(create = TRUE,
+                                                   plugins = list("remove_button")))
               ),
               column(4,
                      textInput(inputId = "batchNumberVaccination",
@@ -84,6 +96,7 @@ vaccinationTabUI <- function(input, output, session, rv) {
             status = "info",
             solidHeader = TRUE,
             fluidRow(column(12, align = "center",h3("Bitte zuerst Tiere in Liste filtern")))
-          ))
+          )),
+          fluidRow(shinysky::busyIndicator("saving vaccinations"))
   )
 }

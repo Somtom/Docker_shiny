@@ -26,6 +26,7 @@ shinyServer(function(input, output, session) {
 
   # Check and add Treatment / Vaccination----
   inputCheckerTreatment(input, output, session)
+  inputCheckerGroupTreatment(input, output, session)
   inputCheckerVaccination(input, output, session)
   addNewTreatment(input, output, session, rv, USER, couchIP)
   addNewVaccination(input, output, session, rv, USER, couchIP)

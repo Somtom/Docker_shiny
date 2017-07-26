@@ -103,7 +103,8 @@ output$bodyUI <- renderUI({
                                 div(shinyalert("alertConfirm", auto.close.after = 2),
                                     style = "color:white; font-weight:bold")
                                 )
-                )
+                ),
+                fluidRow()
         ),
         #CalfList
         calfListTabUI(input, output, session, rv),

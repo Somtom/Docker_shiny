@@ -9,7 +9,7 @@ treatmentTabUI <- function(input, output, session, rv) {
     fluidRow(
       column(4,
              dateInput(inputId = "dateTreatment",
-                       label = "Datum",
+                       label = "Date",
                        value = as.Date(Sys.time()),
                        max = as.Date(Sys.time()))
       ),
@@ -24,7 +24,7 @@ treatmentTabUI <- function(input, output, session, rv) {
     fluidRow(
       column(4,
              selectInput(inputId = "feederTreatment", 
-                         label = "Automat",
+                         label = "Feeder",
                          choices = c("",rv$data$calves$feeder)
                          )
       ),
@@ -63,9 +63,6 @@ treatmentTabUI <- function(input, output, session, rv) {
                           value = "")
       ),
       column(4,
-             # selectInput(inputId = "diagnosisTreatment",
-             #             label = "Aerztliche Diagnose",
-             #             choices = c("",rv$data$diseases))
              selectizeInput(inputId = "diagnosisTreatment",
                             label = "Aerztliche Diagnose",
                             multiple = TRUE,
@@ -97,9 +94,6 @@ treatmentTabUI <- function(input, output, session, rv) {
       br(),
       fluidRow(
         column(4,
-               # selectInput(inputId = "drugTreatment",
-               #             label = "Medikament",
-               #             choices = rv$data$drugs)
                selectizeInput(inputId = "drugTreatment",
                               label = "Medikament",
                               multiple = FALSE,

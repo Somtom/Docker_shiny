@@ -4,14 +4,17 @@ viewFromCouchDB <- function(designDoc,
                             port = 5984,
                             DBName = "foerster-health-documentation",
                             queryParam = NA,
-                            handleID = "remove") {
+                            handleID = "remove",
+                            user = couchUser,
+                            pass = couchPwd) {
   require(R4CouchDB)
   require(data.table)
   
   if (!(handleID %in% c("remove", "only", "keep"))) {return(print("Wrong handleID"))}
   
   #initial connection to couchDB
-  db <- R4CouchDB:::cdbIni(serverName = serverName, port = port, DBName = DBName)
+  db <- R4CouchDB:::cdbIni(serverName = serverName, port = port, DBName = DBName,
+                           uname = user,pwd = pass)
   
   db$design <- designDoc
   db$view <- view

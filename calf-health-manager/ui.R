@@ -28,7 +28,13 @@ source("./server_functions/calfListFilter.R")
 source("./server_functions/renderHistoryTables.R")
 source("./server_functions/matchSelectedAnimalInfo.R")
 source("./server_functions/verifyUser.R")
+source("./couchLogin.R")
 
+
+# Translation
+# source("./translation/updateTranslation.R")
+# source("./translation/translationFunction.R")
+# load("./translation/translation.bin")
 
 # Defining the UI
 shinyUI(

@@ -5,29 +5,26 @@ renderHistoryTables <- function(input, output, session, rv) {
       table <- rv$treatmentTable[with(rv$treatmentTable, order(date, decreasing = T)),]
       table <- table[,-which(names(table) %in%
                                c("calfID","calf.feeder", "X_id", "users", "X_id.1"))]
-      selectedColumns <- names(table) %in% c(input$checkHistoryTable,
+      selectedColumns <- names(table) %in% c(input$checkHistoryTableTreatment,
                                                          "date", "type", "calf", "eartag", "diagnosis")
       table[selectedColumns]},
       options = list(scrollX = TRUE)
     )
   
-  ## Vaccinations
-  # CustomVaccinationTable <- reactive({
-  #   selectedColumns <- names(rv$vaccinationTable) %in% c(input$checkHistoryTable,
-  #                                                      "Datum", "Kalb", "Diagnose", "Art")
-  #   rv$treatmentTable[selectedColumns]
-  #   
-  #   print(rv$treatmentTable)})
   
   output$vaccinationTable <- 
     renderDataTable({
-      # selectedColumns <- names(rv$treatmentTable) %in% c(input$checkHistoryTable,
-      #                                                    "date", "type", "calf", "eartag", "diagnosis")
-      # rv$treatmentTable[selectedColumns]},
       table <- rv$vaccinationTable[with(rv$vaccinationTable, order(date, decreasing = T)),]
       table <- table[,-which(names(table) %in%
                                c("calfID","calf.feeder", "X_id", "users", "X_id.1"))]
-      table},
+      selectedColumns <- names(table) %in% c(input$checkHistoryTableVaccination,
+                                                           "date",
+                                                           "type",
+                                                           "feeder",
+                                                           "calf",
+                                                           "eartag",
+                                                           "purpose")
+      table[selectedColumns]},
       options = list(scrollX = TRUE)
     )
 }

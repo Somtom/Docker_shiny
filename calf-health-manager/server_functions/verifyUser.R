@@ -3,7 +3,9 @@ verifyUser <- function(userName,
                        pwd,
                        serverName = "localhost",
                        port = 5984,
-                       DBName = "foerster-cloud") {
+                       DBName = "foerster-cloud",
+                       user = couchUser,
+                       pass = couchPwd) {
   require(V8)
   require(R4CouchDB)
   require(data.table)
@@ -18,7 +20,8 @@ verifyUser <- function(userName,
   # normal user
   else {
     #initial connection to couchDB
-    db <- R4CouchDB:::cdbIni(serverName = serverName, port = port, DBName = DBName)
+    db <- R4CouchDB:::cdbIni(serverName = serverName, port = port, DBName = DBName,
+                             uname = user,pwd = pass)
     
     user <- gsub("@", "%2540", userName)
     db$id <- gsub(":", "%3A", paste0("employee:", user))

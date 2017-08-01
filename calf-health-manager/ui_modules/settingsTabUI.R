@@ -1,6 +1,6 @@
 # This script defines the Settings Tab in the body of Calf Health Manager Dashboard
 
-settingsTabUI <- function(input, output, session, rv) {
+settingsTabUI <- function(input, output, session, rv, tr) {
   tabItem(tabName = "settings",
           # Treatment
           box(title = "Eingabefelder Befund",
@@ -26,25 +26,62 @@ settingsTabUI <- function(input, output, session, rv) {
               solidHeader = TRUE,
               tabBox(width = 12,
               tabPanel(title = "Befunde/Behandlungen",
-                checkboxGroupInput(inputId = "checkHistoryTable",
+                checkboxGroupInput(inputId = "checkHistoryTableTreatment",
                                    label = "",
                                    choices = subset(names(rv$treatmentTable),
                                                     !(names(rv$treatmentTable) %in% 
                                                         c("date",
                                                           "type",
+                                                          "feeder",
                                                           "calf",
                                                           "eartag",
-                                                          "diagnosis"))),
+                                                          "diagnosis",
+                                                          "findings",
+                                                          "X_id.1",
+                                                          "calf.feeder",
+                                                          "users"))),
                                    selected = subset(names(rv$treatmentTable),
                                                      !(names(rv$treatmentTable) %in% 
                                                          c("date",
                                                            "type",
+                                                           "feeder",
                                                            "calf",
                                                            "eartag",
-                                                           "diagnosis")))
+                                                           "diagnosis",
+                                                           "findings",
+                                                           "X_id.1",
+                                                           "calf.feeder",
+                                                           "users")))
                 )
                 ),
-              tabPanel(title = "Impfungen")
+              tabPanel(title = "Impfungen",
+                       checkboxGroupInput(inputId = "checkHistoryTableVaccination",
+                                          label = "",
+                                          choices = subset(names(rv$vaccinationTable),
+                                                           !(names(rv$vaccinationTable) %in% 
+                                                               c("date",
+                                                                 "type",
+                                                                 "feeder",
+                                                                 "calf",
+                                                                 "eartag",
+                                                                 "purpose",
+                                                                 "X_id.1",
+                                                                 "calf.feeder",
+                                                                 "users"))),
+                                          selected = subset(names(rv$vaccinationTable),
+                                                            !(names(rv$vaccinationTable) %in% 
+                                                                c("date",
+                                                                  "type",
+                                                                  "feeder",
+                                                                  "calf",
+                                                                  "eartag",
+                                                                  "purpose",
+                                                                  "X_id.1",
+                                                                  "calf.feeder",
+                                                                  "users"))))
               ))
+          ),
+          
+          fluidRow()
   )
 }

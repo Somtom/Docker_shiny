@@ -1,7 +1,9 @@
 saveToCouchDB <- function(dt,
                           serverName = "172.18.0.23",
                           port = 5984,
-                          DBName = "foerster-health-documentation") {
+                          DBName = "foerster-health-documentation",
+                          user = couchUser,
+                          pass = couchPwd) {
   require(R4CouchDB)
 
   
@@ -9,7 +11,8 @@ saveToCouchDB <- function(dt,
   push.data <- apply(dt,1,as.list)
   
   #initial connection to couchDB
-  db <- R4CouchDB:::cdbIni(serverName = serverName, port = port, DBName = DBName)
+  db <- R4CouchDB:::cdbIni(serverName = serverName, port = port, DBName = DBName,
+                           uname = user,pwd = pass)
   
   #loop for pushing every single row as new document to couchDB
   for (i in 1:length(push.data)) {
